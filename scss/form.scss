@@ -1,0 +1,81 @@
+.bootbox-body {
+  text-align: center;
+
+  .fa {
+    color: #4bb543;
+    font-size: 128px;
+    padding-bottom: 35px;
+    padding-top: 35px;
+  }
+}
+
+.files {
+  
+  .file {
+    padding-top: 10px;
+  }
+  
+}
+
+.alert.fixed-top {
+  text-align: center; 
+  opacity: 0.95;
+}
+
+.table-field {
+  
+  .print-table {
+    color: #fff;
+  }
+
+  .table-container {
+    max-width: 100%;
+    overflow: auto;
+    overflow-x: auto;
+  }
+  
+  table {
+    margin-bottom: 0px;
+    min-width: 500px;
+    
+    th,
+    td {
+      padding-left: 0px;
+      padding-right: 5px;
+    }
+    
+    td {
+      border: 0;
+      padding-top: 5px;
+      padding-bottom: 0px;
+    }
+    
+    th {
+      border-bottom-width: 1px;
+    }
+    
+    th:last-child,
+    td:last-child {
+      padding-right: 0;
+    }
+    
+    input {
+      width: 100%;
+      border: 1px solid #000;
+      
+      &[type='number'] {
+        -moz-appearance:textfield;
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+    }
+    
+    .sum-container {
+      text-align: right;
+    }
+    
+  }
+}

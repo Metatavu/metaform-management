@@ -1,0 +1,44 @@
+{
+  "name": "metaform-management",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "author": {
+    "name": "Metatavu",
+    "email": "devs@metatavu.fi"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "grunt": "^1.0.2",
+    "grunt-babel": "^7.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "load-grunt-tasks": "^4.0.0"
+  },
+  "dependencies": {
+    "async": "2.6.1",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "1.18.3",
+    "connect-redis": "^3.3.3",
+    "cookie-parser": "1.4.3",
+    "express": "4.16.3",
+    "express-session": "^1.15.6",
+    "express-validator": "5.2.0",
+    "html-pdf": "^2.2.0",
+    "keycloak-admin-client": "^0.12.0",
+    "keycloak-connect": "4.0.0-beta.3",
+    "keycloak-connect-multirealm": "^1.1.0",
+    "lodash": "^4.17.10",
+    "mailgun-js": "0.18.0",
+    "metaform-api-client": "0.0.7",
+    "minimist": "^1.2.0",
+    "moment": "2.22.1",
+    "nconf": "0.10.0",
+    "node-xlsx": "^0.12.0",
+    "pug": "2.0.3",
+    "request": "^2.87.0",
+    "socket.io": "2.1.1",
+    "underscore": "1.9.0"
+  }
+}

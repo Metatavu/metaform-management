@@ -1,0 +1,51 @@
+.archived {
+  text-decoration: line-through;
+  background: #eee;
+  cursor: not-allowed;
+}
+
+table.dataTable {
+  tbody {
+    tr.locked {
+      background: #eee;
+      opacity: 0.3;
+
+      &::after {
+        content: "\f023";
+        font-family: "FontAwesome";
+        font-size: 25px;
+        left: 0;
+        margin-left: -30px;
+        padding-top: 2px;
+        position: absolute;
+      }
+    }
+  }
+}
+
+.vex-dialog-input {
+  font-size: 12px;
+
+  .form-group {
+    margin: 0;
+  }
+}
+
+.xlsx-export {
+  float: right;
+  font-size: 13px;
+}
+
+.filter-toggle-link {
+  font-size: 18px;
+  margin-left: 5px;
+  vertical-align: middle;
+  
+  &::before {
+    content: ' (';
+  }
+
+  &::after {
+    content: ')';
+  }
+}
