@@ -1,0 +1,8 @@
+extends layout/layout
+block custom-head
+  title #{metaform.title}
+  +metaform-head
+  script(defer='defer',src='/js/form.min.js',type='text/javascript')
+block body
+  .container
+    .metaform-container(data-form=metaform)

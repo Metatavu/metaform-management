@@ -27,6 +27,26 @@
       } 
       
       return fields;
+    
+    }
+
+    /**
+     * Creates (cloned) version of input Metaform with fields 
+     * filter to match specific context 
+     * 
+     * @param {Object} metaform metaform
+     * @param {String} context context
+     */
+    static filterMetaformContextFields(metaform, context) {
+      const result = JSON.parse(JSON.stringify(metaform));
+
+      result.sections.forEach((section) => {
+        section.fields = section.fields.filter((field) => {
+          return !field.contexts || field.contexts.length === 0 || field.contexts.indexOf(context) > -1;
+        });
+      });
+
+      return result;
     }
     
     /**
@@ -59,8 +79,10 @@
      * @returns {Array} list of meta fields 
      */
     static getMetaFields(metaform, context) {
-      // TODO: Support metafields?
-      return [];
+      const metaFields = metaform.metafields || [];
+      return _.filter(metaFields, (field) => {
+        return (field.contexts||[]).indexOf(context) > -1;
+      });
     }
 
     /**
@@ -71,7 +93,9 @@
      * @returns {Object} translated form model
      */
     static getAdminViewModel(metaform, reply) {
-      const sections = _.filter(metaform.sections, (section) => {
+      const viewModel = FormUtils.filterMetaformContextFields(metaform, "MANAGEMENT");
+
+      const sections = _.filter(viewModel.sections, (section) => {
         if (!section["visible-if"]) {
           return true;
         }
@@ -104,8 +128,8 @@
       });      
       
       return {
-        "title": metaform.title,
-        "theme": metaform.theme,
+        "title": viewModel.title,
+        "theme": viewModel.theme,
         "sections": sections
       };
     }

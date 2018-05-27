@@ -4,6 +4,7 @@
   const config = require("nconf");
   const ApiClient = require(`${__dirname}/../../api-client`);
   const anonymousAuth = require(`${__dirname}/../../anonymous-auth`);
+  const FormUtils = require(__dirname + '/../../form/utils');
 
   /**
    * Renders form
@@ -20,10 +21,11 @@
         res.status(404).send("Not found");
         return;
       }
-
+      
       res.render("form", {
-        metaform: metaform
+        metaform: FormUtils.filterMetaformContextFields(metaform, "FORM")
       });
+      
     } catch (e) {
       res.status(500).send(e);
     }

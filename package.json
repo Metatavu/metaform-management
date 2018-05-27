@@ -31,14 +31,13 @@
     "keycloak-connect-multirealm": "^1.1.0",
     "lodash": "^4.17.10",
     "mailgun-js": "0.18.0",
-    "metaform-api-client": "0.0.7",
+    "metaform-api-client": "0.0.8",
     "minimist": "^1.2.0",
     "moment": "2.22.1",
     "nconf": "0.10.0",
     "node-xlsx": "^0.12.0",
     "pug": "2.0.3",
     "request": "^2.87.0",
-    "socket.io": "2.1.1",
-    "underscore": "1.9.0"
+    "socket.io": "2.1.1"
   }
 }

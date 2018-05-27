@@ -1,0 +1,26 @@
+mixin admin-menu(active)
+  .row
+    .col-12
+      ul.nav.nav-pills.nav-justified
+        li.nav-item
+          a.nav-link(class=active == 'replies' ? 'active' : '', href='/admin') Vastaukset
+        if keycloakAccountUrl
+          li.nav-item
+            a.nav-link(class=active == 'change-password' ? 'active' : '', href=keycloakAccountUrl) Käyttäjätili
+          li.nav-item
+            a.nav-link(href='/logout') Kirjaudu ulos
+mixin table-title(field, reply)
+  td
+    case field.type 
+      when 'radio'
+      when 'select'
+        each option in field.options
+          if reply.data[field.name] == option.name
+            =option.text
+      when 'date'
+        if (field-time)
+          =moment(reply.data[field.name]).format('DD.MM.YYYY HH:mm')
+        else
+          =moment(reply.data[field.name]).format('DD.MM.YYYY')
+      default
+        =reply.data[field.name]
