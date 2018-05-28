@@ -15,9 +15,6 @@
     const apiClient = new ApiClient(req.metaform.token.token);
     const repliesApi = apiClient.getRepliesApi();
     const metaformsApi = apiClient.getMetaformsApi();
-
-    console.log(req.metaform.token.token);
-
     const realm = res.locals.formConfig.realm;
     const formId = res.locals.formConfig.id;
 

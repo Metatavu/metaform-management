@@ -80,6 +80,8 @@
         data: req.body
       };
 
+      console.log(payload);
+
       const reply = await repliesApi.createReply(realm, formId, payload);
       if (reply) {
         res.send(reply);
