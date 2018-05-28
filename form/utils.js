@@ -29,7 +29,7 @@
       return fields;
     
     }
-
+    
     /**
      * Creates (cloned) version of input Metaform with fields 
      * filter to match specific context 
@@ -114,7 +114,7 @@
           return FormUtils.validateFieldVisibilityRule(reply, field["visible-if"]); 
         }).map((field) => {
           return Object.assign(field, {
-            readonly: true
+            readonly: !(field.flags && field.flags.managementEditable)
           });
         });
       }

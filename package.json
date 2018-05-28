@@ -31,7 +31,7 @@
     "keycloak-connect-multirealm": "^1.1.0",
     "lodash": "^4.17.10",
     "mailgun-js": "0.18.0",
-    "metaform-api-client": "0.0.8",
+    "metaform-api-client": "0.0.9",
     "minimist": "^1.2.0",
     "moment": "2.22.1",
     "nconf": "0.10.0",

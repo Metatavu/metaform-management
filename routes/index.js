@@ -39,7 +39,7 @@
      */
 
     app.post('/formReply', form.postReply);
-    app.put('/formReply/:id', authenticate(['manager', 'admin'], keycloak), form.putReply);
+    app.post('/formReply/:id', authenticate(['manager', 'admin'], keycloak), form.updateReply);
     app.post('/reply', form.postReply);
 
     /*
