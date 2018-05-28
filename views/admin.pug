@@ -1,0 +1,44 @@
+extends layout/admin-layout
+
+block body
+  .container
+    +admin-menu('replies')
+  .container
+    .row.mt-4
+      .col-12
+        h2
+          |Vastaukset
+          if includeFiltered
+            a.filter-toggle-link(href="?")
+              |Oletusnäkymä
+            a.xlsx-export(href="#", data-include-filtered=includeFiltered)
+              |Vie xlsx-muodossa
+          else
+            a.filter-toggle-link(href="?includeFiltered=true")
+              |Näytä kaikki
+            a.xlsx-export(href="#", data-include-filtered=includeFiltered)
+              |Vie xlsx-muodossa
+    .row.mt-4.table-container
+      .col-12
+        table#formsTable
+          thead
+            tr
+              each field in fields
+                th
+                  =field.title
+              each metafield in metafields
+                th
+                  =metafield.title
+              th(style="width:0")
+          tbody
+            each reply in replies
+              tr(data-reply-id=reply.id)
+                each field in fields 
+                  +table-title(field, reply)
+                each metafield in metafields
+                  +table-title(metafield, reply)
+                td
+                  a.btn.btn-primary(href="/admin/replies/" + reply.id)
+                    |Avaa
+                  if allowDeletion
+                    button.btn.btn-danger.delete-reply-btn(data-id=reply.id) Poista
