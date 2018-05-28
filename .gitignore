@@ -10,3 +10,5 @@ keycloak.json
 coverage
 /.nyc_output
 .idea
+TODO.txt
+notifications

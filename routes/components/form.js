@@ -4,7 +4,6 @@
   const config = require("nconf");
   const util = require('util');
   const FormUtils = require(__dirname + '/../../form/utils');
-  const Notifications = require(__dirname + '/../../notifications');
   const ApiClient = require(`${__dirname}/../../api-client`);
   const anonymousAuth = require(`${__dirname}/../../anonymous-auth`);
 

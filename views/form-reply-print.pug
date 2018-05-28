@@ -1,0 +1,33 @@
+include mixins/fields
+
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+  body(style="font-size: 10px;")
+    .container.form-container
+      .row
+        .col-12
+          h1
+            =viewModel.title
+      .row
+        .col-12
+          each section in viewModel.sections 
+            .row
+              h2
+                =section.title
+            .row
+              each field in section.fields
+                if field.contexts.indexOf('MANAGEMENT') > -1
+                  +field(field, formReply.data[field.name], true, true)
+          .row
+            .row
+              .col-12
+                h2 Lisätiedot
+          .row
+            each metafield in metafields
+              +field(metafield, formReply.data[metafield.name], true, true)

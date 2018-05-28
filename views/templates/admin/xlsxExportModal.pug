@@ -1,0 +1,7 @@
+each field in fields
+  .form-group
+    label.custom-control.custom-checkbox
+      input.custom-control-input(name=field.name, checked='checked', type='checkbox')
+      span.custom-control-indicator
+      span.custom-control-description
+        =field.title

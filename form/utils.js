@@ -3,6 +3,7 @@
   
   const _ = require("lodash");
   const util = require("util");
+  const NOT_SAVED_FIELDS = ['logo', 'submit', 'small-text', 'html'];
 
   /**
    * Utility class for handling forms
@@ -27,7 +28,18 @@
       } 
       
       return fields;
-    
+    }
+
+    /**
+     * Lists data fields from metaform. 
+     * 
+     * @param {Object} metaform metaform
+     * @return fields from metaform.
+     */
+    static getDataFields(metaform) {
+      return FormUtils.getFields(metaform).filter((field) => {
+        return NOT_SAVED_FIELDS.indexOf(field.type) === -1;
+      });
     }
     
     /**
