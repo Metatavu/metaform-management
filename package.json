@@ -1,6 +1,6 @@
 {
   "name": "metaform-management",
-  "version": "0.0.1-alpha-3",
+  "version": "0.0.1-alpha-4",
   "description": "",
   "main": "app.js",
   "author": {
@@ -16,7 +16,7 @@
     "load-grunt-tasks": "^4.0.0"
   },
   "dependencies": {
-    "async": "2.6.1",
+    "async": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "1.18.3",
@@ -28,7 +28,6 @@
     "html-pdf": "^2.2.0",
     "keycloak-admin-client": "^0.12.0",
     "keycloak-connect": "4.0.0-beta.3",
-    "keycloak-connect-multirealm": "^1.1.0",
     "lodash": "^4.17.10",
     "mailgun-js": "0.18.0",
     "metaform-api-client": "0.0.9",

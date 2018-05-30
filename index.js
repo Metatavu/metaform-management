@@ -9,7 +9,6 @@
   const cookieParser = require('cookie-parser');
   const expressValidator = require('express-validator');
   const config = require('nconf');
-  const KeycloakMultirealm = require("keycloak-connect-multirealm");
   const util = require('util');
   const port = argv.port||3000;
   const app = express();
@@ -17,6 +16,7 @@
   const http = require('http').Server(app);
   const RedisStore = require('connect-redis')(expressSession);
   const sessionStore = new RedisStore();
+  const KeycloakMultirealm = require(`${__dirname}/keycloak/keycloak-multirealm.js`);
 
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'pug');
@@ -29,7 +29,7 @@
     saveUninitialized: true
   }));
   
-  const keycloak = new KeycloakMultirealm({ store: sessionStore}, config.get("keycloak"));
+  const keycloakMultirealm = new KeycloakMultirealm({ store: sessionStore});
 
   app.use((req, res, next) => {
     const host = req.get('host');
@@ -42,18 +42,13 @@
       const keycloakRealmUrl = `${authServerUrl}/realms/${realm}`;
       res.locals.formConfig = formConfig; 
       res.locals.keycloakAccountUrl = `${keycloakRealmUrl}/account`;
-      req.keycloakRealm = realm;
       next();
     } else {
       res.status(404).send("Not found");
     }
   });
 
-  keycloak.getRealmNameFromRequest = (req) => {
-    return req.keycloakRealm;
-  };
-
-  app.use(keycloak.middleware({
+  app.use(keycloakMultirealm.middleware({
     logout: '/logout'
   }));
   
@@ -70,7 +65,7 @@
   app.locals.moment = moment;
   
   require(__dirname + '/websocket')(http);
-  require('./routes')(app, keycloak);
+  require('./routes')(app, keycloakMultirealm);
 
   exports.startServer = (callback) => {
     http.listen(app.get('port'), callback);
