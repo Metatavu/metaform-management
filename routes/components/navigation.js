@@ -11,9 +11,11 @@
    */
   exports.renderIndex = async (req, res) => {
     try {
-      const realm = res.locals.formConfig.realm;
-      const formId = res.locals.formConfig.id;
-      const accessToken = await anonymousAuth.getAccessToken(realm);
+      const formConfig = res.locals.formConfig;
+      const realm = formConfig.realm;
+      const formId = formConfig.id;
+      const keycloak = Object.assign(config.get("keycloak") || {}, formConfig.keycloak || {});
+      const accessToken = await anonymousAuth.getAccessToken(keycloak);
       const apiClient = new ApiClient(accessToken);
       const metaformsApi = apiClient.getMetaformsApi();
       const metaform = await metaformsApi.findMetaform(realm, formId);

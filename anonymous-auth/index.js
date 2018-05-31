@@ -21,12 +21,12 @@
     /**
      * Returns access token
      * 
-     * @param {String} realm Keycloak realm
+     * @param {Object} keycloak Keycloak config
      * @return {Promise} promise for access token
      */
-    async getAccessToken(realm) {
+    async getAccessToken(keycloak) {
       if (!this.accessToken || this.requireFreshToken) {
-        const token = await this.getServiceAccountToken(realm);
+        const token = await this.getServiceAccountToken(keycloak);
         if (token.access_token) {
           this.accessToken = token.access_token;
           this.requireFreshToken = false;
@@ -46,13 +46,15 @@
     /**
      * Gets service account token from keycloak
      * 
-     * @param {String} realm Keycloak realm
+     * @param {Object} keycloak Keycloak config
      * @return {Promise} promise for token
      */
-    getServiceAccountToken(realm) {
-      const clientId = config.get("keycloak:resource");
-      const clientSecret = config.get("keycloak:credentials:secret");
-      const url = `${config.get("keycloak:auth-server-url")}/realms/${realm}/protocol/openid-connect/token`;
+    getServiceAccountToken(keycloak) {
+      const realm = keycloak.realm;
+      const clientId = keycloak.resource;
+      const clientSecret = keycloak.credentials ? keycloak.credentials.secret : null;
+      const authServerUrl = keycloak["auth-server-url"];
+      const url = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
       const passwordEncoded = new Buffer(`${clientId}:${clientSecret}`).toString("base64");
       const authorization = `Basic ${passwordEncoded}`;
 

@@ -4,6 +4,7 @@
   const form = require(`${__dirname}/components/form`);
   const admin = require(`${__dirname}/components/admin`);
   const navigation = require(`${__dirname}/components/navigation`);
+  const system = require(`${__dirname}/components/system`);
   
   /**
    * Middleware for authenticating request with roles
@@ -51,6 +52,12 @@
     app.delete('/admin/replies/:id', authenticate(['manager', 'admin'], keycloakMultirealm), admin.deleteReply);
     app.get('/admin/fields', authenticate(['manager', 'admin'], keycloakMultirealm), admin.getFields);
     app.get('/admin/export/xlsx', authenticate(['manager', 'admin'], keycloakMultirealm), admin.createXlsx);
+
+    /**
+     * System
+     */
+
+    app.get('/system/ping', system.ping);
   };
 
 })();
