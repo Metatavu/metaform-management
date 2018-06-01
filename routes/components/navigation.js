@@ -4,7 +4,7 @@
   const config = require("nconf");
   const ApiClient = require(`${__dirname}/../../api-client`);
   const anonymousAuth = require(`${__dirname}/../../anonymous-auth`);
-  const FormUtils = require(__dirname + '/../../form/utils');
+  const FormUtils = require(`${__dirname}/../../form/utils`);
 
   /**
    * Renders form

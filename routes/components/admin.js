@@ -8,6 +8,7 @@
   const pdf = require('html-pdf');
   const config = require('nconf');
   const ApiClient = require(`${__dirname}/../../api-client`);
+  const ReportController = require(`${__dirname}/../../reports/report-controller`);
 
   exports.renderAdminView = async (req, res) => {
     const includeFiltered = req.query.includeFiltered == "true";
@@ -42,6 +43,34 @@
         replies: replies,
         includeFiltered: includeFiltered,
         allowDeletion: allowDeletion
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
+    }
+  };
+
+  exports.renderReportView = async (req, res) => {
+    const apiClient = new ApiClient(req.metaform.token.token);
+    const repliesApi = apiClient.getRepliesApi();
+    const metaformsApi = apiClient.getMetaformsApi();
+    const realm = res.locals.formConfig.realm;
+    const formId = res.locals.formConfig.id;
+
+    const reportController = new ReportController(res.locals.formConfig);
+    const reports = await reportController.getReportList();
+    if (reports.length === 0) {
+      res.send(404);
+      return;
+    }
+
+    const selectedReport = req.query.report ? req.query.report : reports[0].slug;
+
+    try {
+      res.render("report", { 
+        title: 'Hallintapaneeli',
+        reports: reports,
+        selectedReport: selectedReport
       });
     } catch (e) {
       console.error(e);
@@ -95,6 +124,54 @@
         });
       }
 
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
+    }
+  };
+  
+  exports.getReportFilters = async (req, res) => {
+    try {
+      const reportSlug = req.params.slug;
+      const apiClient = new ApiClient(req.metaform.token.token);
+      const repliesApi = apiClient.getRepliesApi();
+      const metaformsApi = apiClient.getMetaformsApi();
+      const realm = res.locals.formConfig.realm;
+      const formId = res.locals.formConfig.id;
+  
+      const metaform = await metaformsApi.findMetaform(realm, formId);
+      if (!metaform) {
+        res.status(404).send("Not found");
+        return;
+      }
+
+      const reportController = new ReportController(res.locals.formConfig);
+      res.send(await reportController.getFilters(reportSlug, metaform));
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
+    }
+  };
+  
+  exports.getReportData = async (req, res) => {
+    try {
+      const reportSlug = req.params.slug;
+      const apiClient = new ApiClient(req.metaform.token.token);
+      const repliesApi = apiClient.getRepliesApi();
+      const metaformsApi = apiClient.getMetaformsApi();
+      const realm = res.locals.formConfig.realm;
+      const formId = res.locals.formConfig.id;
+      const filters = req.query.filters ? JSON.parse(req.query.filters) : {};
+
+      const metaform = await metaformsApi.findMetaform(realm, formId);
+      if (!metaform) {
+        res.status(404).send("Not found");
+        return;
+      }
+
+      const replies = await repliesApi.listReplies(realm, formId, filters);
+      const reportController = new ReportController(res.locals.formConfig);
+      res.send(await reportController.getReport(reportSlug, metaform, replies));
     } catch (e) {
       console.error(e);
       res.status(500).send(e);

@@ -52,7 +52,10 @@
     app.delete('/admin/replies/:id', authenticate(['manager', 'admin'], keycloakMultirealm), admin.deleteReply);
     app.get('/admin/fields', authenticate(['manager', 'admin'], keycloakMultirealm), admin.getFields);
     app.get('/admin/export/xlsx', authenticate(['manager', 'admin'], keycloakMultirealm), admin.createXlsx);
-
+    app.get('/admin/report', authenticate(['manager', 'admin'], keycloakMultirealm), admin.renderReportView);
+    app.get('/admin/getreportdata/:slug', authenticate(['manager', 'admin'], keycloakMultirealm), admin.getReportData);
+    app.get('/admin/getreportfilters/:slug', authenticate(['manager', 'admin'], keycloakMultirealm), admin.getReportFilters);
+    
     /**
      * System
      */

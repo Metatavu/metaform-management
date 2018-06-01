@@ -1,0 +1,26 @@
+extends layout/admin-layout
+
+block custom-head-admin
+  script(defer='defer',src='//cdn.metatavu.io/libs/chart-js/2.7.2/Chart.bundle.js')
+  script(defer='defer',src='/js/report.min.js')
+
+block body
+  .container
+    +admin-menu('report')
+  .container.form-container
+    .row.mt-4
+      .col-12
+        h2
+          |Raportti
+    .row.mt-4
+      .col-12
+        select(name="report")
+          each report in reports 
+            option(value=report.slug,selected=report.slug == selectedReport)
+              =report.name
+    .row.mb-4
+      .col-12.filters-container
+    .row.mb-4
+      .col-12
+        .report-container
+        

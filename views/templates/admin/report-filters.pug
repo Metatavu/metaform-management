@@ -1,0 +1,15 @@
+form#report-filters
+  each filter in filters
+    .col
+      .row
+        .col
+          label(for="filter-" + filter.field)
+            =filter.title
+      .row
+        .col
+          select(name=filter.field, id="filter-" + filter.field)
+            option(value="__ALL__")
+              |Kaikki
+            each option in filter.options
+              option(value=option.name)
+                =option.text
