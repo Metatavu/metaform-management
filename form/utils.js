@@ -3,7 +3,7 @@
   
   const _ = require("lodash");
   const util = require("util");
-  const NOT_SAVED_FIELDS = ['logo', 'submit', 'small-text', 'html'];
+  const NOT_SAVED_FIELDS = ["logo", "submit", "small-text", "html"];
 
   /**
    * Utility class for handling forms
@@ -28,6 +28,31 @@
       } 
       
       return fields;
+    }
+
+    /**
+     * Finds a field single from a metaform
+     * 
+     * @param {Object} metaform metaform 
+     * @param {String} fieldName field's name
+     * @returns {Object} field 
+     */
+    static getField(metaform, fieldName) {
+      return this.getFields(metaform).filter((field) => {
+        return field.name === fieldName;
+      }).splice(0, 1)[0];
+    }
+
+    /**
+     * Returns field's title from a metaform or null if field is not present
+     * 
+     * @param {Object} metaform metaform 
+     * @param {String} fieldName field's name
+     * @returns {String} field name 
+     */
+    static getFieldTitle(metaform, fieldName) {
+      const field = this.getField(metaform, fieldName);
+      return field ? field.title : null;
     }
 
     /**
