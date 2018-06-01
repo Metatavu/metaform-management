@@ -1,3 +1,4 @@
 {
- "presets": ["env"]
+  "plugins": ["transform-regenerator"],
+  "presets": ["env"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "metaform-management",
-  "version": "0.0.1-alpha-5",
+  "version": "0.1.1-alpha-1",
   "description": "",
   "main": "app.js",
   "author": {
@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "grunt": "^1.0.2",
     "grunt-babel": "^7.0.0",
