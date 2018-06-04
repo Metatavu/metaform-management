@@ -30,8 +30,6 @@
 
       const fields = FormUtils.getContextFields(metaform, "MANAGEMENT");
 
-      console.log("fields", fields);
-
       // Sanitize body?
       
       for (let i = 0; i < fields.length; i++) {
