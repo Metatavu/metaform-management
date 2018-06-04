@@ -30,15 +30,12 @@
 
       const fields = FormUtils.getContextFields(metaform, "MANAGEMENT");
 
-      console.log("fields", fields);
-
       // Sanitize body?
       
       for (let i = 0; i < fields.length; i++) {
         let field = fields[i];
         if (field.flags && field.flags.managementEditable) {
           reply.data[field.name] = req.body[field.name];
-          console.log(reply.data[field.name]);
         }
       }
 
@@ -79,8 +76,6 @@
       const payload = {
         data: req.body
       };
-
-      console.log(payload);
 
       const reply = await repliesApi.createReply(realm, formId, payload);
       if (reply) {

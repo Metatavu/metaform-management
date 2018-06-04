@@ -26,14 +26,35 @@
         return;
       }
 
-      // TODO: Filtering?
+      const listConfig = res.locals.formConfig.list || {};
+      const listFilters = listConfig.filters || [];
+
+      const fieldFilters = includeFiltered  ? null : listFilters
+        .map((filter) => {
+          const notEquals = filter["not-equals"]; 
+          const equals = filter["equals"];
+          const field = filter.field;
+          const value = notEquals ? notEquals : equals;
+          
+          if (!field || !value) {
+            return null;
+          }
+
+          const operator = notEquals ? "^" : ":";  
+
+          return `${field}${operator}${value}`;
+        })
+        .filter((filter) => {
+          return !!filter;
+        });
 
       const replies = await repliesApi.listReplies(realm, formId, {
         createdBefore: null,
         createdAfter: null,
         modifiedBefore: null,
         modifiedAfter: null,
-        includeRevisions: false
+        includeRevisions: false,
+        fields: fieldFilters
       });
 
       res.render('admin', { 
