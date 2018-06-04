@@ -90,12 +90,17 @@
 
           switch (field.type) {
             case "radio":
-              options.options = (field.options || []).map((option) => {
-                return {
-                  name: option.name,
-                  text: option.text 
-                };
-              }); 
+            case "select":
+              options.options = (field.options || [])
+                .filter((option) => {
+                  return option && option.name;
+                })
+                .map((option) => {
+                  return {
+                    name: option.name,
+                    text: option.text 
+                  };
+               }); 
             break;
           }
 
