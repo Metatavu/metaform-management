@@ -64,8 +64,7 @@
      */
     getChartData(slug, options) {
       const filters = options.filters || '';
-      console.log("koo");
-      return getJSON(`/admin/getreportdata/${slug}?filters=${filters}&createdBefore=${new Date()}`);
+      return getJSON(`/admin/getreportdata/${slug}?filters=${filters}`);
     }
 
     /**

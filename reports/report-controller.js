@@ -76,7 +76,6 @@
     async getFilters(reportSlug, metaform) {
       const reports = await this.getReports();
       const filters = await reports[reportSlug].getFilters(metaform);
-      const timeFilters = await reports[reportSlug].getTimeFilters();
 
       return filters
         .map((filter) => {
