@@ -36,7 +36,6 @@
         let field = fields[i];
         if (field.flags && field.flags.managementEditable) {
           reply.data[field.name] = req.body[field.name];
-          console.log(reply.data[field.name]);
         }
       }
 
@@ -52,9 +51,11 @@
   
   exports.postReply = async (req, res) => {
     try {
-      const realm = res.locals.formConfig.realm;
-      const formId = res.locals.formConfig.id;
-      const accessToken = await anonymousAuth.getAccessToken(realm);
+      const formConfig = res.locals.formConfig;
+      const realm = formConfig.realm;
+      const formId =formConfig.id;
+      const keycloak = Object.assign(config.get("keycloak") || {}, formConfig.keycloak || {});
+      const accessToken = await anonymousAuth.getAccessToken(keycloak);
       const apiClient = new ApiClient(accessToken);
       const metaformsApi = apiClient.getMetaformsApi();
       const repliesApi = apiClient.getRepliesApi();
@@ -77,8 +78,6 @@
       const payload = {
         data: req.body
       };
-
-      console.log(payload);
 
       const reply = await repliesApi.createReply(realm, formId, payload);
       if (reply) {
