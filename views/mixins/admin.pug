@@ -4,21 +4,21 @@ mixin admin-menu(active)
       ul.nav.flex-column
         li.nav-item
           a.nav-link(class=active == 'replies' ? 'active' : '', href='/admin')
-            span(data-feather='home')
+            span
             | Vastaukset 
             span.sr-only (current)
         li.nav-item
           a.nav-link(class=active == 'report' ? 'active' : '', href='/admin/report')
-            span(data-feather='file')
+            span
             | Raportit
         if keycloakAccountUrl
           li.nav-item
             a.nav-link(class=active == 'change-password' ? 'active' : '', href=keycloakAccountUrl)
-              span(data-feather='shopping-cart')
+              span
               | Käyttäjätili
           li.nav-item
             a.nav-link(href='/logout')
-              span(data-feather='shopping-cart')
+              span
               | Kirjaudu ulos
 mixin table-title(field, reply)
   td
