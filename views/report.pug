@@ -7,18 +7,20 @@ block custom-head-admin
 block body
   +admin-menu('report')
   main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main')
-    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pb-2.mb-3.border-bottom
-      h1.h2 Raportti
-    .form-container
-      .row.mt-4
-        .col-12
-          select.form-control(name="report")
-            each report in reports 
-              option(value=report.slug,selected=report.slug == selectedReport)
-                =report.name
-      .row.mb-4
-        .col-12.filters-container
-      .row.mb-4
-        .col-12
-          .report-container
+    .container
+      .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pb-2.mb-3.border-bottom
+        h1.h2 Raportit
+      .form-container
+        .row.mt-4
+          .col-12
+            h5 Raportti
+            select.form-control(name="report")
+              each report in reports 
+                option(value=report.slug,selected=report.slug == selectedReport)
+                  =report.name
+        .row.mb-4
+          .col-12.filters-container
+        .row.mb-4
+          .col-12
+            .report-container
         
