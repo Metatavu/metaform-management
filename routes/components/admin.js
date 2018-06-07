@@ -189,7 +189,7 @@
         res.status(404).send("Not found");
         return;
       }
-
+      
       const replies = await repliesApi.listReplies(realm, formId, filters);
       const reportController = new ReportController(res.locals.formConfig);
       res.send(await reportController.getReport(reportSlug, metaform, replies));
