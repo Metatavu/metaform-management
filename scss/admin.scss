@@ -49,3 +49,38 @@ table.dataTable {
     content: ')';
   }
 }
+
+#report-filters {
+  padding-top: 20px;
+}
+
+.fa-bars {
+  font-size: 26px;
+}
+
+.mobile-navigation {
+  display: none;
+  z-index: 9999999;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .nav-item {
+    text-align: center;
+
+    .nav-link {
+      font-size: 22px;
+      color: #fff;
+    }
+  }
+}
+
+.navbar-dark {
+  display: none;
+
+  @media only screen and(max-width: 767px) {
+    display: flex;
+  }
+}

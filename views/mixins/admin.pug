@@ -1,17 +1,25 @@
 mixin admin-menu(active)
-  .row
-    .col-12
-      ul.nav.nav-pills.nav-justified
+  nav.col-md-2.d-none.d-md-block.bg-light.sidebar
+    .sidebar-sticky
+      ul.nav.flex-column
         li.nav-item
-          a.nav-link(class=active == 'replies' ? 'active' : '', href='/admin') Vastaukset
-        if formConfig.reports
-          li.nav-item
-            a.nav-link(class=active == 'report' ? 'active' : '', href='/admin/report') Raportit
+          a.nav-link(class=active == 'replies' ? 'active' : '', href='/admin')
+            span
+            | Vastaukset 
+            span.sr-only (current)
+        li.nav-item
+          a.nav-link(class=active == 'report' ? 'active' : '', href='/admin/report')
+            span
+            | Raportit
         if keycloakAccountUrl
           li.nav-item
-            a.nav-link(class=active == 'change-password' ? 'active' : '', href=keycloakAccountUrl) Käyttäjätili
+            a.nav-link(class=active == 'change-password' ? 'active' : '', href=keycloakAccountUrl)
+              span
+              | Käyttäjätili
           li.nav-item
-            a.nav-link(href='/logout') Kirjaudu ulos
+            a.nav-link(href='/logout')
+              span
+              | Kirjaudu ulos
 mixin table-title(field, reply)
   td
     case field.type 

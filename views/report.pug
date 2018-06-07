@@ -5,22 +5,22 @@ block custom-head-admin
   script(defer='defer',src='/js/report.min.js')
 
 block body
-  .container
-    +admin-menu('report')
-  .container.form-container
-    .row.mt-4
-      .col-12
-        h2
-          |Raportti
-    .row.mt-4
-      .col-12
-        select(name="report")
-          each report in reports 
-            option(value=report.slug,selected=report.slug == selectedReport)
-              =report.name
-    .row.mb-4
-      .col-12.filters-container
-    .row.mb-4
-      .col-12
-        .report-container
+  +admin-menu('report')
+  main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main')
+    .container
+      .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pb-2.mb-3.border-bottom
+        h1.h2 Raportit
+      .form-container
+        .row.mt-4
+          .col-12
+            h5 Raportti
+            select.form-control(name="report")
+              each report in reports 
+                option(value=report.slug,selected=report.slug == selectedReport)
+                  =report.name
+        .row.mb-4
+          .col-12.filters-container
+        .row.mb-4
+          .col-12
+            .report-container
         

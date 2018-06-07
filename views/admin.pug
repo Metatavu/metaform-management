@@ -1,23 +1,19 @@
 extends layout/admin-layout
 
 block body
-  .container
-    +admin-menu('replies')
-  .container
-    .row.mt-4
-      .col-12
-        h2
-          |Vastaukset
-          if includeFiltered
-            a.filter-toggle-link(href="?")
-              |Oletusnäkymä
-            a.xlsx-export(href="#", data-include-filtered=includeFiltered)
-              |Vie xlsx-muodossa
-          else
-            a.filter-toggle-link(href="?includeFiltered=true")
-              |Näytä kaikki
-            a.xlsx-export(href="#", data-include-filtered=includeFiltered)
-              |Vie xlsx-muodossa
+  +admin-menu('replies')
+  main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main')
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pb-2.mb-3.border-bottom
+      h1.h2 Vastaukset
+      .btn-toolbar.mb-2.mb-md-0
+      if includeFiltered
+        .btn-group.mr-2
+          a.btn.btn-sm.btn-outline-secondary(href="?") Oletusnäkymä
+          a.btn.btn-sm.btn-outline-secondary(href="#", data-include-filtered=includeFiltered) Vie xlsx-muodossa
+      else
+        .btn-group.mr-2
+          a.btn.btn-sm.btn-outline-secondary(href="?includeFiltered=true") Näytä kaikki
+          a.btn.btn-sm.btn-outline-secondary(href="#", data-include-filtered=includeFiltered) Vie xlsx-muodossa
     .row.mt-4.table-container
       .col-12
         table#formsTable

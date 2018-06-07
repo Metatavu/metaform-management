@@ -1,0 +1,12 @@
+mixin mobileNavigation()
+  .mobile-navigation
+    ul.bg-dark
+      li.nav-item.bg-dark
+        a.nav-link(class=active == 'replies' ? 'active' : '', href='/admin') Vastaukset 
+      li.nav-item.bg-dark
+        a.nav-link(class=active == 'report' ? 'active' : '', href='/admin/report') Raportit
+      if keycloakAccountUrl
+        li.nav-item.bg-dark
+          a.nav-link(class=active == 'change-password' ? 'active' : '', href=keycloakAccountUrl) Käyttäjätili
+        li.nav-item.bg-dark
+          a.nav-link(href='/logout') Kirjaudu ulos
