@@ -59,10 +59,10 @@
      * @param {Object} chartData
      */
     processCustomOptions(chartData) {
-      chartData.options.scales.yAxes.forEach((y, index) => {
+      chartData.options.scales.yAxes.forEach((y) => {
         if (y.ticks.customTicks) {
           const customTicks = y.ticks.customTicks;
-          y.ticks.callback = function (value, index, values) {
+          y.ticks.callback = (value, index, values) => {
             return customTicks[index];
           };
         }
@@ -172,7 +172,7 @@
     onReportFilterChange(event) {
       const form = $(event.target).closest("form");
 
-      const fieldValues = form.find(".field-filter").map(function (index, fieldFilter) {
+      const fieldValues = form.find(".field-filter").map((index, fieldFilter) => {
         const name = $(fieldFilter).attr('name');
         const value = $(fieldFilter).val();
 
@@ -182,7 +182,7 @@
         };
       }).toArray();
 
-      const timeValues = form.find(`.time-filter[type="hidden"]`).map(function (index, timeFilter) {
+      const timeValues = form.find(`.time-filter[type="hidden"]`).map((index, timeFilter) => {
         if ($(timeFilter).val().length <= 0) {
           return;
         }
@@ -190,7 +190,7 @@
         return {
           value: $(timeFilter).val(),
           name: $(timeFilter).attr('name')
-        }
+        };
       }).toArray();
 
       const filters = {

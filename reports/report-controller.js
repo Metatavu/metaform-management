@@ -93,6 +93,13 @@
         });
     }
 
+    /**
+     * Add title to filter
+     * 
+     * @param {Object} metaform metaform
+     * @param {Object} filter filter
+     * @return {Object} object filter
+     */
     getReplyTimeFilter(metaform, filter) {
       const options = {};
 
@@ -114,6 +121,13 @@
       return Object.assign(filter, options);
     }
 
+    /**
+     * Returns field filter's name and text
+     * 
+     * @param {Object} metaform metaform
+     * @param {Object} filter filter
+     * @return {Object} object filter
+     */
     getFieldFilter(metaform, filter) {
       const field = FormUtils.getField(metaform, filter.field);
       if (!field) {
