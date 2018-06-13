@@ -216,7 +216,7 @@
             return `${fieldValue.name}:${fieldValue.value}`;
           })
       };
-      console.log(filters);
+      
       this.chartController.loadReport(this.getSelectedReportSlug(), {
         filters: JSON.stringify(filters)
       });
