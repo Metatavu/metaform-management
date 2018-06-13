@@ -1,6 +1,12 @@
 extends layout/admin-layout
 
 block body
+  nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
+    ul.navbar-nav.px-3.ml-auto
+      li.nav-item.text-nowrap
+        a.nav-link.nav-toggle(href='#')
+          i(class="fa fa-bars")
+    +mobileNavigation()
   +admin-menu('replies')
   main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main')
     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pb-2.mb-3.border-bottom

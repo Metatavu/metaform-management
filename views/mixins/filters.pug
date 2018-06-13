@@ -1,0 +1,24 @@
+mixin fieldFilter(filter)
+  .col
+    .row
+      .col
+        label(for="field-filter-" + filter.field)
+          =filter.title
+    .row
+      .col
+        select.form-control.field-filter(name=filter.field, id="field-filter-" + filter.field)
+          option(value="__ALL__")
+            |Kaikki
+          each option in filter.options
+            option(value=option.name)
+              =option.text
+
+mixin timeFilter(filter)
+  .col
+    .row
+      .col
+        label(for="time-filter-" + filter.field)
+          =filter.title
+    .row
+      .col
+        input.time-filter.form-control(type='text', name=filter.field, id='time-filter-'+filter.field, placeholder='Valitse aika', data-input='')
