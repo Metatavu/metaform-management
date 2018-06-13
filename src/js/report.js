@@ -43,16 +43,32 @@
      * @param {Object} options options
      */
     async loadReport(slug, options) {
-      const chartData = await this.getChartData(slug, options || {});
-      
+      let chartData = await this.getChartData(slug, options || {});
+      chartData = this.processCustomOptions(chartData);
       if (!this.chart) {
         this.chart = new Chart(this.context, chartData);
       } else {
-        this.chart.type = chartData.type; 
-        this.chart.data = chartData.data; 
-        this.chart.options = chartData.options || {}; 
-        this.chart.update();
+        this.chart.destroy();
+        this.chart = new Chart(this.context, chartData);
       }
+    }
+
+    /**
+     * Process custom options if there is any
+     * 
+     * @param {Object} chartData
+     */
+    processCustomOptions(chartData) {
+      chartData.options.scales.yAxes.forEach((y, index) => {
+        if (y.ticks.customTicks) {
+          const customTicks = y.ticks.customTicks;
+          y.ticks.callback = function (value, index, values) {
+            return customTicks[index];
+          };
+        }
+      });
+      
+      return chartData;
     }
 
     /**
@@ -107,6 +123,20 @@
       this.filtersContainer.html(renderReportFilters({
         filters: filters
       }));
+      this.initFlatpickrs();
+    }
+
+    /**
+     * Initialize flatpickr
+     */
+    initFlatpickrs() {
+      $(".time-filter").flatpickr({
+        "locale": "fi",
+        "altFormat": "d.m.Y",
+        "altInput": true,
+        "utc": true,
+        "allowInput": true
+      });
     }
 
     /**
@@ -140,19 +170,53 @@
      * Report filter change event handler
      */
     onReportFilterChange(event) {
-      const formValues = $(event.target).closest("form")
-        .serializeArray();
+      const form = $(event.target).closest("form");
+
+      const fieldValues = form.find(".field-filter").map(function (index, fieldFilter) {
+        const name = $(fieldFilter).attr('name');
+        const value = $(fieldFilter).val();
+
+        return {
+          value: value,
+          name: name
+        };
+      }).toArray();
+
+      const timeValues = form.find(`.time-filter[type="hidden"]`).map(function (index, timeFilter) {
+        if ($(timeFilter).val().length <= 0) {
+          return;
+        }
+        
+        return {
+          value: $(timeFilter).val(),
+          name: $(timeFilter).attr('name')
+        }
+      }).toArray();
 
       const filters = {
-        fields: formValues
-          .filter(formValue => {
-            return formValue.value !== '__ALL__'
+        createdBefore: timeValues
+          .filter((timeValue) => {
+            return timeValue.name === "createdBefore" && timeValue.value.length > 0;
           })
-          .map((formValue) => {
-            return `${formValue.name}:${formValue.value}`;
+          .map((timeValue) => {
+            return moment(timeValue.value).toISOString();
+          }),
+        createdAfter: timeValues
+          .filter((timeValue) => {
+            return timeValue.name === "createdAfter";
+          })
+          .map((timeValue) => {
+            return moment(timeValue.value).toISOString();
+          }),
+        fields: fieldValues
+          .filter((fieldValue) => {
+            return fieldValue.value !== '__ALL__'
+          })
+          .map((fieldValue) => {
+            return `${fieldValue.name}:${fieldValue.value}`;
           })
       };
-
+      console.log(filters);
       this.chartController.loadReport(this.getSelectedReportSlug(), {
         filters: JSON.stringify(filters)
       });

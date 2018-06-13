@@ -22,11 +22,5 @@ html(lang='en')
     block custom-head
     if metaformMode === 'test'
       script(defer="defer" src="//cdn.metatavu.io/libs/tools/debug/0.0.2/debug.js")
-  body
-    nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
-      ul.navbar-nav.px-3.ml-auto
-        li.nav-item.text-nowrap
-          a.nav-link.nav-toggle(href='#')
-            i(class="fa fa-bars")
-    +mobileNavigation()
+  body 
     block body

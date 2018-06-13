@@ -79,36 +79,68 @@
 
       return filters
         .map((filter) => {
-          const field = FormUtils.getField(metaform, filter.field);
-          if (!field) {
-            return null;
+          switch (filter.type) {
+            case "field":
+              return this.getFieldFilter(metaform, filter);
+            case "reply-time":
+              return this.getReplyTimeFilter(metaform, filter);
+            default:
+              break;
           }
-
-          const options = {
-            title: field.title
-          };
-
-          switch (field.type) {
-            case "radio":
-            case "select":
-              options.options = (field.options || [])
-                .filter((option) => {
-                  return option && option.name;
-                })
-                .map((option) => {
-                  return {
-                    name: option.name,
-                    text: option.text 
-                  };
-               }); 
-            break;
-          }
-
-          return Object.assign(filter, options);
         })
         .filter((filter) => {
           return !!filter; 
         });
+    }
+
+    getReplyTimeFilter(metaform, filter) {
+      const options = {};
+
+      switch (filter.field) {
+        case "createdBefore":
+          options.title = "Luotu ennen";
+        break;
+        case "createdAfter":
+          options.title = "Luotu jälkeen";
+        break;
+        case "modifiedBefore":
+          options.title = "Muokattu ennen";
+        break;
+        case "modifiedAfter":
+          options.title = "Muokattu jälkeen";
+        break;
+      }
+
+      return Object.assign(filter, options);
+    }
+
+    getFieldFilter(metaform, filter) {
+      const field = FormUtils.getField(metaform, filter.field);
+      if (!field) {
+        return null;
+      }
+
+      const options = {
+        title: field.title
+      };
+
+      switch (field.type) {
+        case "radio":
+        case "select":
+          options.options = (field.options || [])
+            .filter((option) => {
+              return option && option.name;
+            })
+            .map((option) => {
+              return {
+                name: option.name,
+                text: option.text 
+              };
+            }); 
+        break;
+      }
+
+      return Object.assign(filter, options);
     }
 
     /**
