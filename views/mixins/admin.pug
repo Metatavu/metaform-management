@@ -7,10 +7,11 @@ mixin admin-menu(active)
             span
             | Vastaukset 
             span.sr-only (current)
-        li.nav-item
-          a.nav-link(class=active == 'report' ? 'active' : '', href='/admin/report')
-            span
-            | Raportit
+        if formConfig.reports
+          li.nav-item
+            a.nav-link(class=active == 'report' ? 'active' : '', href='/admin/report')
+              span
+              | Raportit
         if keycloakAccountUrl
           li.nav-item
             a.nav-link(class=active == 'change-password' ? 'active' : '', href=keycloakAccountUrl)
