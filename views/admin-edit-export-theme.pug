@@ -1,0 +1,67 @@
+extends layout/admin-layout
+
+block custom-head-admin
+  link(rel='stylesheet', href='//cdn.metatavu.io/libs/codemirror/5.39.2/lib/codemirror.css')
+  script(defer='defer',src='//cdn.metatavu.io/libs/codemirror/5.35.0/lib/codemirror.js',type='text/javascript')
+  script(defer='defer',src='//cdn.metatavu.io/libs/codemirror/5.35.0/mode/properties/properties.js',type='text/javascript')
+  script(defer='defer',src='/js/codemirror.min.js',type='text/javascript')
+  script(defer='defer',src='/js/edit-export-theme.min.js',type='text/javascript')
+
+block body
+  form(method="POST")
+    .container
+      .row.pt-4
+        .col
+          h3
+            |Export theme editor
+        .col.text-right
+          a.btn.btn-info(href="/admin/export-themes")
+            |Theme list
+      .row
+        .col
+          label
+            |Name
+      .row
+        .col
+          input.form-control(text="text",name="name",value=exportTheme.name)
+      .row
+        .col
+          label
+            |Parent
+      .row
+        .col
+          select.form-control(text="text",name="parentId",value=exportTheme.parentId)
+            option(value="")
+              |No parent
+            each theme in exportThemes
+              if theme.id != exportTheme.id
+                option(value=theme.id,selected=exportTheme.parentId == theme.id)
+                  =theme.name
+      .row
+        .col
+          label
+            |Locales
+      .row
+        .col
+          textarea.codemirror(name="locales",data-mode="text/x-properties")
+            =exportTheme.locales
+      .row
+        .col.pt-2
+          input.btn.btn-success(type="submit",value="Save")
+          input(type="hidden",value=exportTheme.id,name="export-theme-id")
+      .row.pt-4
+        .col
+          label
+            |Files
+      each exportThemeFile in exportThemeFiles
+        .row.mb-1
+          .col
+            =exportThemeFile.path
+          .col.text-right
+            a.btn.btn-info.edit-theme-file-btn(href="/admin/export-themes/" + exportThemeFile.themeId + "/files/" + exportThemeFile.id)
+              |Edit
+      .row
+        .col
+          a.btn.btn-success.new-theme-file-btn(href="#")
+            |New file
+        
