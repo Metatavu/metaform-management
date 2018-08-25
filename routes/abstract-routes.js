@@ -45,6 +45,28 @@
     }
 
     /**
+     * Middleware for authenticating request with realm roles
+     * 
+     * @param {Array} allowedRoles list of roles
+     * @param {Object} keycloak Keycloak instance
+     */
+    realmRole(allowedRoles) {
+      return this.keycloakMultirealm.protect((token, req) => {
+        for (let i = 0; i < allowedRoles.length; i++) {
+          if (token.hasRealmRole(allowedRoles[i])) {
+            req.metaform = {
+              token: token
+            };
+
+            return true;
+          }
+        }
+
+        return false;
+      });
+    }
+
+    /**
      * Catch unhandled promise errors
      * 
      * @param {function} handler handler function

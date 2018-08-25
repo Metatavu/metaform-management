@@ -21,16 +21,14 @@
     constructor (app, keycloakMultirealm) {
       super(app, keycloakMultirealm);
 
-      // TODO: proper roles
-
-      app.get('/admin/export-themes', this.authenticate(['manager', 'admin']), this.catchAsync(this.getExportThemes.bind(this)));
-      app.get('/admin/export-themes/:themeId', this.authenticate(['manager', 'admin']), this.catchAsync(this.getEditExportTheme.bind(this)));
-      app.post('/admin/export-themes/:themeId', this.authenticate(['manager', 'admin']), this.catchAsync(this.postEditExportTheme.bind(this)));
-      app.get('/admin/export-themes/:themeId/files/:fileId', this.authenticate(['manager', 'admin']), this.catchAsync(this.getEditExportThemeFile.bind(this)));
-      app.post('/admin/export-themes/:themeId/files/:fileId', this.authenticate(['manager', 'admin']), this.catchAsync(this.postEditExportThemeFile.bind(this)));
+      app.get('/admin/export-themes', this.realmRole(['metaform-admin']), this.catchAsync(this.getExportThemes.bind(this)));
+      app.get('/admin/export-themes/:themeId', this.realmRole(['metaform-admin']), this.catchAsync(this.getEditExportTheme.bind(this)));
+      app.post('/admin/export-themes/:themeId', this.realmRole(['metaform-admin']), this.catchAsync(this.postEditExportTheme.bind(this)));
+      app.get('/admin/export-themes/:themeId/files/:fileId', this.realmRole(['metaform-admin']), this.catchAsync(this.getEditExportThemeFile.bind(this)));
+      app.post('/admin/export-themes/:themeId/files/:fileId', this.realmRole(['metaform-admin']), this.catchAsync(this.postEditExportThemeFile.bind(this)));
       
-      app.post('/ajax/admin/export-themes/new', this.authenticate(['manager', 'admin']), this.catchAsync(this.postAjaxCreateExportTheme.bind(this)));
-      app.post('/ajax/admin/export-themes/:themeId/files/new', this.authenticate(['manager', 'admin']), this.catchAsync(this.postAjaxCreateExportThemeFile.bind(this)));
+      app.post('/ajax/admin/export-themes/new', this.realmRole(['metaform-admin']), this.catchAsync(this.postAjaxCreateExportTheme.bind(this)));
+      app.post('/ajax/admin/export-themes/:themeId/files/new', this.realmRole(['metaform-admin']), this.catchAsync(this.postAjaxCreateExportThemeFile.bind(this)));
     }
 
     /**
