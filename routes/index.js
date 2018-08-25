@@ -1,6 +1,9 @@
 (() => {
   'use strict';
 
+  const AdminExportThemeRoutes = require(`${__dirname}/admin-report-themes-routes`);
+  const AdminFormRoutes = require(`${__dirname}/admin-form-routes`);
+
   const form = require(`${__dirname}/components/form`);
   const admin = require(`${__dirname}/components/admin`);
   const navigation = require(`${__dirname}/components/navigation`);
@@ -61,6 +64,9 @@
      */
 
     app.get('/system/ping', system.ping);
+
+    new AdminExportThemeRoutes(app, keycloakMultirealm);
+    new AdminFormRoutes(app, keycloakMultirealm);
   };
 
 })();

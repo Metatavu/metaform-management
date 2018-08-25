@@ -10,7 +10,7 @@
   /**
    * Export theme routes
    */
-  class ExportThemeRoutes extends AbstractRoutes {
+  class AdminExportThemeRoutes extends AbstractRoutes {
     
     /**
      * Constructor for category routes class
@@ -208,7 +208,7 @@
 
   }
 
-  module.exports = ExportThemeRoutes;
+  module.exports = AdminExportThemeRoutes;
 
 })();
 

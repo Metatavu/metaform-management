@@ -1,0 +1,27 @@
+extends layout/admin-layout
+
+block custom-head-admin
+  link(rel='stylesheet', href='//cdn.metatavu.io/libs/codemirror/5.39.2/lib/codemirror.css')
+  script(defer='defer',src='//cdn.metatavu.io/libs/codemirror/5.35.0/lib/codemirror.js',type='text/javascript')
+  script(defer='defer',src='//cdn.metatavu.io/libs/codemirror/5.35.0/mode/javascript/javascript.js',type='text/javascript')
+  script(defer='defer',src='/js/codemirror.min.js',type='text/javascript')
+
+block body
+  form(method="POST")
+    .container
+      .row.pt-4
+        .col
+          h3
+            |Metaform editor
+      .form-group
+        label#title Title
+        input.form-control(placeholder="optional",for="title", text="text", name="title", value=title)
+      .form-check
+        input#allow-anonymous.form-check-input(type="checkbox",value="true", name="allow-anonymous", checked=allowAnonymous)  
+        label.form-check-label(for="allow-anonymous") Allow anonymous
+      .form-group
+        label
+          |Form JSON
+        textarea.form-control.codemirror(name="form-json",data-mode="application/json")
+          =formJson
+      input.btn.btn-primary(type="submit",value="Save")
