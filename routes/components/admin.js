@@ -7,6 +7,7 @@
   const util = require('util');
   const pdf = require('html-pdf');
   const config = require('nconf');
+  const request = require('request');
   const ApiClient = require(`${__dirname}/../../api-client`);
   const ReportController = require(`${__dirname}/../../reports/report-controller`);
 
@@ -227,7 +228,32 @@
   exports.deleteReply = (req, res) => {
     res.status(501).send("Not implemented");
   };
-  
+
+  exports.renderReplyPdf = async (req, res) => {
+    const realm = res.locals.formConfig.realm;
+    const formId = res.locals.formConfig.id;
+    const replyId = req.params.id;
+    const apiUri = config.get("api:url");
+    const url = `${apiUri}/realms/${realm}/metaforms/${formId}/replies/${replyId}/export?format=PDF`;
+    
+    request.get({ 
+      url: url, 
+      encoding: null,
+      headers : {
+        Authorization : `Bearer ${req.metaform.token.token}`
+      }
+    }, (err, httpResponse, body) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send(err);
+      } else {
+        res.header("Content-Type", "application/pdf");
+        res.header("Content-Disposition", "attachment; filename=\"export.pdf\"");
+        res.send(body);
+      }
+    });
+  }
+
   exports.createXlsx = async (req, res) => {
     const includeFiltered = req.query.includeFiltered == "true";
     const allowDeletion = config.get('allow-deletion') || false;
