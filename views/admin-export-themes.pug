@@ -1,0 +1,25 @@
+extends layout/admin-layout
+
+block custom-head-admin
+  script(defer='defer',src='/js/export-themes.min.js',type='text/javascript')
+
+block body
+  form(method="POST")
+    .container
+      .row.pt-4
+        .col
+          h3
+            |Export themes
+
+      each exportTheme in exportThemes
+        .row.mb-1
+          .col-10
+            =exportTheme.name
+          .col-2.text-right
+            a.btn.btn-info(href="/admin/export-themes/" + exportTheme.id)
+              |Edit
+
+      .row
+        .col
+          a.btn.btn-success.new-theme-btn(href="#")
+            |New theme

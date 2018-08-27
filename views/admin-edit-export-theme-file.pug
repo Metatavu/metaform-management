@@ -1,0 +1,36 @@
+extends layout/admin-layout
+
+block custom-head-admin
+  link(rel='stylesheet', href='//cdn.metatavu.io/libs/codemirror/5.39.2/lib/codemirror.css')
+  script(defer='defer',src='//cdn.metatavu.io/libs/codemirror/5.35.0/lib/codemirror.js',type='text/javascript')
+  script(defer='defer',src='//cdn.metatavu.io/libs/codemirror-freemarker/1.0.0/freemarker.js',type='text/javascript')
+  script(defer='defer',src='/js/codemirror.min.js',type='text/javascript')
+
+block body
+  form(method="POST")
+    .container
+      .row.pt-4
+        .col
+          h3
+            |Export theme file editor
+        .col.text-right
+          a.btn.btn-info(href="/admin/export-themes/" + exportThemeFile.themeId)
+            |Edit theme
+      .row
+        .col
+          label
+            |Path
+      .row
+        .col
+          input.form-control(name="path",value=exportThemeFile.path)
+      .row
+        .col
+          label
+            |Content
+      .row
+        .col
+          textarea.codemirror(name="content",data-mode="freemarker")
+            =exportThemeFile.content
+      .row
+        .col.pt-2
+          input.btn.btn-success(type="submit",value="Save")

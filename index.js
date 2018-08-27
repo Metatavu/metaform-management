@@ -41,6 +41,7 @@
       const authServerUrl = config.get("keycloak:auth-server-url");
       const keycloakRealmUrl = `${authServerUrl}/realms/${realm}`;
       res.locals.formConfig = formConfig; 
+      res.locals.formHostname = hostname;
       res.locals.keycloakAccountUrl = `${keycloakRealmUrl}/account`;
       next();
     } else {
