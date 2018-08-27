@@ -3,6 +3,7 @@
 
   const AdminExportThemeRoutes = require(`${__dirname}/admin-report-themes-routes`);
   const AdminFormRoutes = require(`${__dirname}/admin-form-routes`);
+  const FormUploadRoutes = require(`${__dirname}/form-upload-routes`);
 
   const form = require(`${__dirname}/components/form`);
   const admin = require(`${__dirname}/components/admin`);
@@ -52,6 +53,8 @@
 
     app.get('/admin', authenticate(['manager', 'admin'], keycloakMultirealm), admin.renderAdminView);
     app.get('/admin/replies/:id', authenticate(['manager', 'admin'], keycloakMultirealm), admin.getFormReply);
+    app.get('/admin/replies/:id/pdf', authenticate(['manager', 'admin'], keycloakMultirealm), admin.renderReplyPdf);
+
     app.delete('/admin/replies/:id', authenticate(['manager', 'admin'], keycloakMultirealm), admin.deleteReply);
     app.get('/admin/fields', authenticate(['manager', 'admin'], keycloakMultirealm), admin.getFields);
     app.get('/admin/export/xlsx', authenticate(['manager', 'admin'], keycloakMultirealm), admin.createXlsx);
@@ -65,6 +68,7 @@
 
     app.get('/system/ping', system.ping);
 
+    new FormUploadRoutes(app, keycloakMultirealm);
     new AdminExportThemeRoutes(app, keycloakMultirealm);
     new AdminFormRoutes(app, keycloakMultirealm);
   };
