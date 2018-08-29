@@ -36,11 +36,15 @@
     async getAdminForm (req, res) {
       const apiClient = new ApiClient(req.metaform.token.token);
       const metaformsApi = apiClient.getMetaformsApi();
+      const exportThemesApi = apiClient.getExportThemesApi();
       const realm = res.locals.formConfig.realm;
       const formId = res.locals.formConfig.id;
+      const exportThemes = await exportThemesApi.listExportThemes(realm);
+
       let formJson = {};
       let title = null;
       let allowAnonymous = null;
+      let exportThemeId = null;
 
       const metaform = formId != null ? await metaformsApi.findMetaform(realm, formId) : null;
       if (metaform) {
@@ -50,12 +54,15 @@
 
         title = metaform.title;
         allowAnonymous = metaform.allowAnonymous;
+        exportThemeId = metaform.exportThemeId;
       }      
 
       res.render("admin-edit-form", {
         title: title,
+        exportThemeId: exportThemeId,
         allowAnonymous: allowAnonymous, 
-        formJson: JSON.stringify(formJson, null, 2)
+        formJson: JSON.stringify(formJson, null, 2),
+        exportThemes: exportThemes 
       });
     }
   
@@ -71,6 +78,7 @@
       const metaformsApi = apiClient.getMetaformsApi();
       const formId = res.locals.formConfig.id;
       const allowAnonymous = req.body["allow-anonymous"] === "true";
+      const exportThemeId = req.body["export-theme-id"];
       
       const formJson = JSON.parse(req.body["form-json"] || "{}");
       if (formJson) {
@@ -80,7 +88,8 @@
           const metaform = await metaformsApi.createMetaform(realm, {
             allowAnonymous: allowAnonymous,
             title: title,
-            sections: formJson.sections
+            sections: formJson.sections,
+            exportThemeId: exportThemeId
           });
 
           if (metaform) {
@@ -97,6 +106,7 @@
           metaform.title = title;
           metaform.allowAnonymous = allowAnonymous;
           metaform.sections = formJson.sections;
+          metaform.exportThemeId = exportThemeId;
 
           await metaformsApi.updateMetaform(realm, formId, metaform);
 
