@@ -20,8 +20,15 @@ block body
         input#allow-anonymous.form-check-input(type="checkbox",value="true", name="allow-anonymous", checked=allowAnonymous)  
         label.form-check-label(for="allow-anonymous") Allow anonymous
       .form-group
+        label#title Theme
+        select.form-control(name="export-theme-id")
+          option(value="") None
+          each exportTheme in exportThemes
+            option(value=exportTheme.id,selected=exportThemeId == exportTheme.id) 
+              =exportTheme.name
+      .form-group
         label
           |Form JSON
-        textarea.form-control.codemirror(name="form-json",data-mode="application/json")
+        textarea.codemirror(name="form-json",data-mode="application/json")
           =formJson
       input.btn.btn-primary(type="submit",value="Save")
