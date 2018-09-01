@@ -1,6 +1,6 @@
 node_modules
 .settings
-config.json
+config*.json
 keycloak.json
 /.project
 /.tern-project

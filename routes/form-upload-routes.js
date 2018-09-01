@@ -22,11 +22,33 @@
     constructor (app, keycloakMultirealm) {
       super(app, keycloakMultirealm);
 
+      app.get("/upload/:id", this.authenticate(["manager", "admin"]), this.catchAsync(this.getUpload.bind(this)));
       app.post("/upload/", this.catchAsync(this.postUpload.bind(this)));
     }
 
     /**
-     * Handles upload request
+     * Handles upload get request
+     * 
+     * @param {Express.Request} req client request object
+     * @param {Express.Response} res server response object
+     **/
+    getUpload (req, res) {
+      const attachmentId = req.params.id;
+      const realm = res.locals.formConfig.realm;
+      const apiUri = config.get("api:url");
+      const token = req.metaform.token.token;
+      const requestOptions = {
+        url: `${apiUri}/realms/${realm}/attachments/${attachmentId}/data`,
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      };
+
+      request(requestOptions).pipe(res);
+    }
+
+    /**
+     * Handles upload post request
      * 
      * @param {Express.Request} req client request object
      * @param {Express.Response} res server response object
