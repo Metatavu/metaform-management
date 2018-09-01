@@ -66,6 +66,32 @@
         return NOT_SAVED_FIELDS.indexOf(field.type) === -1;
       });
     }
+
+    /**
+     * Lists fields by type from metaform. 
+     * 
+     * @param {Object} metaform metaform
+     * @param {String} type type
+     * @return fields from metaform.
+     */
+    static getFieldsByType(metaform, type) {
+      return FormUtils.getFields(metaform).filter((field) => {
+        return field.type === type;
+      });
+    }
+
+    /**
+     * Lists field names by type from metaform. 
+     * 
+     * @param {Object} metaform metaform
+     * @param {String} type type
+     * @return field names from metaform.
+     */
+    static getFieldNamesByType(metaform, type) {
+      return FormUtils.getFieldsByType(metaform, type).map((field) => {
+        return field.name;
+      });
+    }
     
     /**
      * Creates (cloned) version of input Metaform with fields 

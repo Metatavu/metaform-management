@@ -38,6 +38,15 @@
     }
 
     /**
+     * Returns initialized AttachmentsApi instance
+     * 
+     * @returns {MetaformApiClient.AttachmentsApi} initialized AttachmentsApi instance
+     */
+    getAttachmentsApi() {
+      return new MetaformApiClient.AttachmentsApi(this.createClient());
+    }
+
+    /**
      * Returns initialized ExportThemesApi instance
      * 
      * @returns {MetaformApiClient.ExportThemesApi} initialized ExportThemesApi instance
