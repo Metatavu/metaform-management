@@ -29,6 +29,8 @@ mixin table-title(field, reply)
         each option in field.options
           if reply.data[field.name] == option.name
             =option.text
+      when 'date-time'
+        =moment(reply.data[field.name]).format('DD.MM.YYYY HH:mm')
       when 'date'
         if (field-time)
           =moment(reply.data[field.name]).format('DD.MM.YYYY HH:mm')
