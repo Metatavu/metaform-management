@@ -156,7 +156,8 @@
           title: 'Vastaus',
           viewModel: adminViewModel,
           metafields: metaFields,
-          formReply: reply
+          formReply: reply,
+          hasExportTheme: !!metaform.exportThemeId
         });
       }
 
