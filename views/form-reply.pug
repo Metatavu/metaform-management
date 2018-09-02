@@ -2,7 +2,8 @@ extends layout/admin-layout
 
 block custom-head-admin
   +metaform-head
-  link(rel='stylesheet', href='/css/themes/' + viewModel.theme  + '/form-reply.min.css')
+  if viewModel.theme
+    link(rel='stylesheet', href='/css/themes/' + viewModel.theme  + '/form-reply.min.css')
   script(defer='defer',src='/js/form.min.js')
 
 block body
