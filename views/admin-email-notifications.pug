@@ -1,0 +1,28 @@
+extends layout/admin-layout
+
+block custom-head-admin
+  script(defer='defer',src='/js/email-notifications.min.js',type='text/javascript')
+
+block body
+  form(method="POST")
+    .container
+      .row.pt-4
+        .col
+          h3
+            |Email notifications
+
+      each emailNotification in emailNotifications
+        .row.mb-1
+          .col-10
+            -var mails=emailNotification.emails.join(', ')
+            if mails.length > 200
+              -mails = mails.substr(0, 197) + '...'
+            =mails
+          .col-2.text-right
+            a.btn.btn-info(href="/admin/email-notifications/" + emailNotification.id)
+              |Edit
+
+      .row
+        .col
+          a.btn.btn-success.new-notification-btn(href="#")
+            |New notification
