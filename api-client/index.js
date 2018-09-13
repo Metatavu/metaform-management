@@ -65,6 +65,15 @@
     }
 
     /**
+     * Returns initialized EmailNotificationsApi instance
+     * 
+     * @returns {MetaformApiClient.EmailNotificationsApi} initialized ExportThemeFilesApi instance
+     */
+    getEmailNotificationsApi() {
+      return new MetaformApiClient.EmailNotificationsApi(this.createClient());
+    }
+
+    /**
      * Creates initialized API client
      * 
      * @returns {MetaformApiClient.ApiClient} initialized API client instance
