@@ -97,7 +97,7 @@
     getCacheKey(req, res) {
       if (res.locals.formConfig) {
         const formConfig = res.locals.formConfig;
-        return `${formConfig.realm}:${formConfig.resource}`;
+        return `${formConfig.realm}:${formConfig.keycloak.resource}`;
       }
 
       return null;

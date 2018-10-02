@@ -107,6 +107,7 @@
       const apiClient = new ApiClient(req.metaform.token.token);
       const repliesApi = apiClient.getRepliesApi();
       const metaformsApi = apiClient.getMetaformsApi();
+      const attachmentsApi = apiClient.getAttachmentsApi();
       const realm = res.locals.formConfig.realm;
       const formId = res.locals.formConfig.id;
   
@@ -138,11 +139,25 @@
           });
         });
       } else {
+        const fileFields = FormUtils.getFieldNamesByType(metaform, "files");
+        
+        for (let fileFieldIndex = 0; fileFieldIndex < fileFields.length; fileFieldIndex++) {
+          const fileField = fileFields[fileFieldIndex];
+          reply.data[fileField] = await Promise.all((reply.data[fileField] || []).map(async (attachmentId) => {
+            const attachment = await attachmentsApi.findAttachment(realm, attachmentId);
+            return {
+              fileData: attachment.id,
+              originalname: attachment.name
+            }
+          }));
+        }
+
         res.render('form-reply', {
           title: 'Vastaus',
           viewModel: adminViewModel,
           metafields: metaFields,
-          formReply: reply
+          formReply: reply,
+          hasExportTheme: !!metaform.exportThemeId
         });
       }
 
@@ -240,7 +255,8 @@
       url: url, 
       encoding: null,
       headers : {
-        Authorization : `Bearer ${req.metaform.token.token}`
+        "Authorization" : `Bearer ${req.metaform.token.token}`,
+        "Accept-Language": "fi"
       }
     }, (err, httpResponse, body) => {
       if (err) {

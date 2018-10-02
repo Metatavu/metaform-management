@@ -2,20 +2,20 @@
   'use strict';
 
   const SocketDatas = require(`${__dirname}/socket-datas.js`);
-  const socketDatas = new SocketDatas();
   
-  module.exports = (http) => {
+  module.exports = (http, database) => {
     const io = require('socket.io')(http);
-    
+    const socketDatas = new SocketDatas(database);
+
     io.on('connection', async (socket) => {
       await socketDatas.set(socket.id, {
         openReplies: []
       });
 
-      const socketIds = await socketDatas.getSocketIds();
-      for (let i = 0; i < socketIds.length; i++) {
-        const socketId = socketIds[i];
-        const socketData = await socketDatas.get(socketId);
+      const socketDataEntities = await socketDatas.getSocketDatas();
+      for (let i = 0; i < socketDataEntities.length; i++) {
+        const socketDataEntity = socketDataEntities[i];
+        const socketData = JSON.parse(socketDataEntity.data);
         const openReplies = socketData && socketData.openReplies ? socketData.openReplies : [];
 
         for (let j = 0; j < openReplies.length; j++) {
