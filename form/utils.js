@@ -276,6 +276,30 @@
     }
 
     /**
+     * Returns form data from request
+     * 
+     * @param {Object} req request objerct 
+     * @param {Object} metaform metaform
+     */
+    static getFormData(req, metaform) {
+      const result = Object.assign({}, req.body);
+      const tableFields = FormUtils.getFieldNamesByType(metaform, "table");
+
+      for (let i = 0; i < tableFields.length; i++) {
+        const tableField = tableFields[i];
+
+        if (FormUtils.isValueSet(req, tableField)) {
+          const tableValue = req.body[tableField];
+          if ((typeof tableValue) === "string") {
+            result[tableField] = JSON.parse(tableValue);
+          }
+        }
+      }
+
+      return result;
+    }
+    
+    /**
      * Validates a request
      * 
      * @param {Object} req request objerct 
