@@ -73,10 +73,8 @@
         return;
       }
 
-      // Sanitize body?
-      
       const payload = {
-        data: req.body
+        data: FormUtils.getFormData(req, metaform)
       };
 
       const reply = await repliesApi.createReply(realm, formId, payload);
@@ -86,7 +84,6 @@
         res.status(500).send("Failed to save reply");
       }
 
-      // TODO: Notifications.notify(Form.notifications, reply);
     } catch (e) {
       console.error(e);
       res.status(500).send(e);
