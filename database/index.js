@@ -53,7 +53,7 @@
      * 
      * @return {Promise} Promise for migrations 
      */
-    async migrate() {   
+    async migrate() {
       const locked = await this.obtainMigrationLock();
       if (locked) {
         const umzug = new Umzug({
@@ -171,6 +171,7 @@
      * @param {Object} options model options
      */
     defineModel(name, attributes, options) {
+      console.log(name);
       this[name] = this.sequelize.define(name, attributes, Object.assign(options || {}, {
         charset: "utf8mb4",
         dialectOptions: {
@@ -200,6 +201,35 @@
         },
         data: Sequelize.STRING(191)
       });
+
+      this.defineModel("ReplyDraft", {
+        replyId: {
+          type: Sequelize.UUID,
+          primaryKey: true
+        },
+        reply: Sequelize.TEXT('long')
+      });
+    }
+
+    /**
+     * Creates new form draft
+     * 
+     * @param {String} reply
+     */
+    createFormDraft(reply, id) {
+      return this.ReplyDraft.create({
+        replyId: id,
+        reply: JSON.stringify(reply)
+      });
+    }
+
+    /**
+     * Finds form draft
+     * 
+     * @param {UUID} replyId
+     */
+    findFormDraft(replyId) {
+      return this.ReplyDraft.findOne({ where: { replyId: replyId } });
     }
 
     /**

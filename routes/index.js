@@ -47,6 +47,10 @@
     app.post('/formReply', form.postReply);
     app.post('/formReply/:id', authenticate(['manager', 'admin'], keycloakMultirealm), form.updateReply);
     app.post('/reply', form.postReply);
+    
+    app.post('/formDraft', form.createDraft);
+    app.get('/formDraft', form.getDraft);
+    app.post('/formDraft/email', form.sendDraftToEmail);
 
     /*
      *  Admin
