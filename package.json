@@ -31,7 +31,7 @@
     "keycloak-connect": "4.3.0",
     "lodash": "^4.17.10",
     "mailgun-js": "0.20.0",
-    "metaform-api-client": "0.0.17",
+    "metaform-api-client": "0.0.20",
     "minimist": "^1.2.0",
     "moment": "^2.22.2",
     "mysql2": "^1.6.1",
