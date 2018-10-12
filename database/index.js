@@ -171,7 +171,6 @@
      * @param {Object} options model options
      */
     defineModel(name, attributes, options) {
-      console.log(name);
       this[name] = this.sequelize.define(name, attributes, Object.assign(options || {}, {
         charset: "utf8mb4",
         dialectOptions: {
