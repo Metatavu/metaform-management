@@ -4,9 +4,6 @@
     module.exports = {
   
       up: async (query, Sequelize) => {
-        console.log("juuu");
-
-        
         await query.createTable("ConnectSessions", {
           sid: { type: Sequelize.STRING(191), primaryKey: true },
           userId: Sequelize.STRING(191),
