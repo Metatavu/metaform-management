@@ -6,7 +6,6 @@
   const FormUtils = require(__dirname + '/../../form/utils');
   const ApiClient = require(`${__dirname}/../../api-client`);
   const anonymousAuth = require(`${__dirname}/../../anonymous-auth`);
-  const database = require(`${__dirname}/../../database`);
   const uuid = require('uuid/v4');
   const mailer = require(`${__dirname}/../../services/mailer`);
 
@@ -87,69 +86,6 @@
         res.status(500).send("Failed to save reply");
       }
 
-    } catch (e) {
-      console.error(e);
-      res.status(500).send(e);
-    }
-  };
-
-  /**
-   * Creates new draft
-   */
-  exports.createDraft = async (req, res) => {
-    try {
-      const reply = req.body;
-      const dbConnection = new database();
-      await dbConnection.initialize();
-
-      const response = await dbConnection.createFormDraft(reply, uuid());
-      res.status(200).send(response);
-    } catch (e) {
-      console.error(e);
-      res.status(500).send(e);
-    }
-  };
-
-  /**
-   * Send draft to email
-   */
-  exports.sendDraftToEmail = async (req, res) => {
-    if (!req.body.email || !req.body.draftUrl) {
-      return res.status(500).send("Did not receive email address or URL to draft");
-    }
-
-    try {
-      let html = `<p>Käytä alla olevaa linkkiä jatkaaksesi lomakkeen täyttämistä.</p>`;
-      html += `<a href="${req.body.draftUrl}">${req.body.draftUrl}</a>`;
-      html += `<p>Tämä on automaattinen viesti, älä vastaa.</p>`;
-      
-      mailer.sendMail(req.body.email, 'Linkki tallennettuun lomakkeeseen', html, (err, body) => {
-        if (err) {
-          return res.status(400).send(err);
-        } 
-
-        return res.status(200).send();
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).send(e);
-    }
-  };
-
-  /**
-   * Get draft
-   */
-  exports.getDraft = async (req, res) => {
-    try {
-      const id = req.query.draftId;
-      const dbConnection = new database();
-      await dbConnection.initialize();
-
-      const response = await dbConnection.findFormDraft(id);
-
-      if (response) {
-        res.status(200).send(response);
-      }
     } catch (e) {
       console.error(e);
       res.status(500).send(e);
