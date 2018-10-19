@@ -19,13 +19,6 @@
           createdAt: { type: Sequelize.DATE, allowNull: false },
           updatedAt: { type: Sequelize.DATE, allowNull: false }
         });
-
-        await query.createTable("ReplyDrafts", {
-          replyId: { allowNull: false, primaryKey: true, type: Sequelize.UUID },
-          reply: Sequelize.TEXT('long'),
-          createdAt: { type: Sequelize.DATE, allowNull: false },
-          updatedAt: { type: Sequelize.DATE, allowNull: false }
-        });
       }
   
     };

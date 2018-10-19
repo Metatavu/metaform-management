@@ -7,6 +7,7 @@
   const AbstractRoutes = require(`${__dirname}/abstract-routes`);
   const database = require(`${__dirname}/../database`);
   const mailer = require(`${__dirname}/../services/mailer`);
+  const uuid = require("uuid");
 
   /**
    * Draft routes
@@ -24,7 +25,7 @@
 
       app.get("/formDraft", this.catchAsync(this.getDraft.bind(this)));
       app.post("/formDraft", this.catchAsync(this.createDraft.bind(this)));
-      app.post("/formDraft/{id}/email", this.catchAsync(this.sendDraftToEmail.bind(this)));
+      app.post("/formDraft/:id/email", this.catchAsync(this.sendDraftToEmail.bind(this)));
     }
 
     /**
@@ -34,14 +35,13 @@
      * @param {Express.Response} res server response object
      */
     async createDraft (req, res) {
-      try {
-        const reply = req.body;
-        const response = await database.createFormDraft(reply, uuid());
-        res.status(200).send(response);
-      } catch (e) {
-        console.error(e);
-        res.status(500).send(e);
+      if (!req.body.formData) {
+        return res.status(400).send("formData is required");
       }
+
+      const draft = await database.createFormDraft(uuid(), JSON.stringify(req.body.formData));
+
+      res.status(200).send(this.translateDraft(draft));
     }
 
     /**
@@ -54,23 +54,18 @@
       if (!req.body.email || !req.body.draftUrl) {
         return res.status(400).send("Did not receive email address or URL to draft");
       }
+      
+      let html = `<p>Käytä alla olevaa linkkiä jatkaaksesi lomakkeen täyttämistä.</p>`;
+      html += `<a href="${req.body.draftUrl}">${req.body.draftUrl}</a>`;
+      html += `<p>Tämä on automaattinen viesti, älä vastaa.</p>`;
+      
+      mailer.sendMail(req.body.email, 'Linkki tallennettuun lomakkeeseen', html, (err) => {
+        if (err) {
+          return res.status(400).send(err);
+        } 
 
-      try {
-        let html = `<p>Käytä alla olevaa linkkiä jatkaaksesi lomakkeen täyttämistä.</p>`;
-        html += `<a href="${req.body.draftUrl}">${req.body.draftUrl}</a>`;
-        html += `<p>Tämä on automaattinen viesti, älä vastaa.</p>`;
-        
-        mailer.sendMail(req.body.email, 'Linkki tallennettuun lomakkeeseen', html, (err) => {
-          if (err) {
-            return res.status(400).send(err);
-          } 
-
-          return res.status(200).send();
-        });
-      } catch (e) {
-        console.error(e);
-        res.status(500).send(e);
-      }
+        return res.status(200).send();
+      });
     }
 
     /**
@@ -80,19 +75,30 @@
      * @param {Express.Response} res server response object
      */
     async getDraft (req, res) {
-      try {
-        const id = req.query.draftId;
-        const response = await database.findFormDraft(id);
-
-        if (!response) {
-          return res.status(404).send("Not found");
-        }
-
-        res.status(200).send(response);
-      } catch (e) {
-        console.error(e);
-        res.status(500).send(e);
+      const draft = await database.findFormDraftById(id);
+      if (!draft) {
+        return res.status(404).send("Not found");
       }
+
+      res.status(200).send(this.translateDraft(draft));
+    }
+
+    /**
+     * Translates database draft into REST draft
+     * 
+     * @param {Object} draft database draft
+     * @returns {Object} REST draft 
+     */
+    translateDraft(draft) {
+      if (!draft) {
+        return null;
+      }
+
+      return {
+        id: draft.id,
+        formData: JSON.parse(draft.formData)
+      };
+
     }
 
   }

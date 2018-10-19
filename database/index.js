@@ -202,33 +202,50 @@
       });
 
       this.defineModel("ReplyDraft", {
-        replyId: {
+        id: {
           type: Sequelize.UUID,
           primaryKey: true
         },
-        reply: Sequelize.TEXT('long')
+        formData: Sequelize.TEXT('long')
       });
     }
 
     /**
      * Creates new form draft
      * 
-     * @param {String} reply
+     * @param {UUID} id
+     * @param {String} formData
+     * @returns {Promise} created form draft
      */
-    createFormDraft(reply, id) {
+    createFormDraft(id, formData) {
       return this.ReplyDraft.create({
-        replyId: id,
-        reply: JSON.stringify(reply)
+        id: id,
+        formData: formData
       });
     }
 
     /**
-     * Finds form draft
+     * Finds form draft by id
      * 
-     * @param {UUID} replyId
+     * @param {UUID} id
+     * @returns {Promise} created form draft
      */
-    findFormDraft(replyId) {
-      return this.ReplyDraft.findOne({ where: { replyId: replyId } });
+    findFormDraftById(id) {
+      return this.ReplyDraft.findOne({ where: { id: id } });
+    }
+
+    /**
+     * Upserts form draft data
+     * 
+     * @param {UUID} id
+     * @param {String} formData
+     * @returns {Promise} created form draft
+     */
+    upsertFormDraft(id, formData) {
+      return this.ReplyDraft.upsert({
+        id: id,
+        formData: formData
+      });
     }
 
     /**
