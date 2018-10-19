@@ -19,6 +19,9 @@ block body
       .form-check
         input#allow-anonymous.form-check-input(type="checkbox",value="true", name="allow-anonymous", checked=allowAnonymous)  
         label.form-check-label(for="allow-anonymous") Allow anonymous
+      .form-check
+        input#allow-drafts.form-check-input(type="checkbox",value="true", name="allow-drafts", checked=allowDrafts)  
+        label.form-check-label(for="allow-drafts") Allow drafts
       .form-group
         label#title Theme
         select.form-control(name="export-theme-id")
