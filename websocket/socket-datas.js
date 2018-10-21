@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const database = require(`${__dirname}/../database`);
+
   /**
    * Database storage for web socket data
    */
@@ -9,8 +11,7 @@
     /**
      * Constructor
      */
-    constructor(database) {
-      this.database = database;
+    constructor() {
     }
 
     /**
@@ -20,7 +21,7 @@
      * @returns {Promise} promise for data
      */
     async get(socketId) {
-      const socketData = await this.database.findSocketData(socketId);
+      const socketData = await database.findSocketData(socketId);
       return socketData && socketData.value ? JSON.parse(socketData.value) : null;
     }
 
@@ -32,7 +33,7 @@
      * @returns {Promise} promise
      */
     async set(socketId, data) {
-      await this.database.upsertSocketData(socketId, JSON.stringify(data));
+      await database.upsertSocketData(socketId, JSON.stringify(data));
     }
 
     /**
@@ -42,14 +43,14 @@
      * @returns {Promise} promise
      */
     async unset(socketId) {
-      await this.database.deleteSocketData(socketId);
+      await database.deleteSocketData(socketId);
     }
 
     /**
      * Returns connected socket ids
      */
     async getSocketDatas() {
-      return this.database.listSocketDatas();
+      return database.listSocketDatas();
     }
 
     /**

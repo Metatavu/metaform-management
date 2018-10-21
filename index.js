@@ -15,14 +15,13 @@
   const http = require('http').Server(app);
   const SequelizeStore = require("connect-session-sequelize")(expressSession.Store);
   const KeycloakMultirealm = require(`${__dirname}/keycloak/keycloak-multirealm.js`);
-  const Database = require(`${__dirname}/database`);
+  const database = require(`${__dirname}/database`);
 
   exports.startServer = async () => {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'pug');
     app.use(cookieParser());
 
-    const database = new Database();
     await database.initialize();
 
     const sessionStore = new SequelizeStore({
@@ -73,7 +72,7 @@
     app.locals.metaformMode = config.get('mode') || 'production';
     app.locals.moment = moment;
     
-    require(__dirname + '/websocket')(http, database);
+    require(__dirname + '/websocket')(http);
     require('./routes')(app, keycloakMultirealm);
 
     return new Promise((resolve, reject) => {

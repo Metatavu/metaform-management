@@ -45,6 +45,7 @@
       let title = null;
       let allowAnonymous = null;
       let exportThemeId = null;
+      let allowDrafts = null;
 
       const metaform = formId != null ? await metaformsApi.findMetaform(realm, formId) : null;
       if (metaform) {
@@ -54,6 +55,7 @@
 
         title = metaform.title;
         allowAnonymous = metaform.allowAnonymous;
+        allowDrafts = metaform.allowDrafts;
         exportThemeId = metaform.exportThemeId;
       }      
 
@@ -61,6 +63,7 @@
         title: title,
         exportThemeId: exportThemeId,
         allowAnonymous: allowAnonymous, 
+        allowDrafts: allowDrafts,
         formJson: JSON.stringify(formJson, null, 2),
         exportThemes: exportThemes 
       });
@@ -79,6 +82,7 @@
       const formId = res.locals.formConfig.id;
       const allowAnonymous = req.body["allow-anonymous"] === "true";
       const exportThemeId = req.body["export-theme-id"];
+      const allowDrafts = req.body["allow-drafts"] === "true";
       
       const formJson = JSON.parse(req.body["form-json"] || "{}");
       if (formJson) {
@@ -87,6 +91,7 @@
         if (!formId) {
           const metaform = await metaformsApi.createMetaform(realm, {
             allowAnonymous: allowAnonymous,
+            allowDrafts: allowDrafts,
             title: title,
             sections: formJson.sections,
             exportThemeId: exportThemeId
@@ -105,6 +110,7 @@
 
           metaform.title = title;
           metaform.allowAnonymous = allowAnonymous;
+          metaform.allowDrafts = allowDrafts;
           metaform.sections = formJson.sections;
           metaform.exportThemeId = exportThemeId;
 

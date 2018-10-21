@@ -5,6 +5,7 @@
   const AdminFormRoutes = require(`${__dirname}/admin-form-routes`);
   const AdminEmailTemplateRoutes = require(`${__dirname}/admin-email-template-routes`);
   const FormUploadRoutes = require(`${__dirname}/form-upload-routes`);
+  const DraftRoutes = require(`${__dirname}/draft-routes`);
 
   const form = require(`${__dirname}/components/form`);
   const admin = require(`${__dirname}/components/admin`);
@@ -73,6 +74,7 @@
     new AdminExportThemeRoutes(app, keycloakMultirealm);
     new AdminFormRoutes(app, keycloakMultirealm);
     new AdminEmailTemplateRoutes(app, keycloakMultirealm);
+    new DraftRoutes(app, keycloakMultirealm);
   };
 
 })();

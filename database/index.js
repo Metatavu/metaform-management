@@ -53,7 +53,7 @@
      * 
      * @return {Promise} Promise for migrations 
      */
-    async migrate() {   
+    async migrate() {
       const locked = await this.obtainMigrationLock();
       if (locked) {
         const umzug = new Umzug({
@@ -200,6 +200,52 @@
         },
         data: Sequelize.STRING(191)
       });
+
+      this.defineModel("ReplyDraft", {
+        id: {
+          type: Sequelize.UUID,
+          primaryKey: true
+        },
+        formData: Sequelize.TEXT('long')
+      });
+    }
+
+    /**
+     * Creates new form draft
+     * 
+     * @param {UUID} id
+     * @param {String} formData
+     * @returns {Promise} created form draft
+     */
+    createFormDraft(id, formData) {
+      return this.ReplyDraft.create({
+        id: id,
+        formData: formData
+      });
+    }
+
+    /**
+     * Finds form draft by id
+     * 
+     * @param {UUID} id
+     * @returns {Promise} created form draft
+     */
+    findFormDraftById(id) {
+      return this.ReplyDraft.findOne({ where: { id: id } });
+    }
+
+    /**
+     * Upserts form draft data
+     * 
+     * @param {UUID} id
+     * @param {String} formData
+     * @returns {Promise} created form draft
+     */
+    upsertFormDraft(id, formData) {
+      return this.ReplyDraft.upsert({
+        id: id,
+        formData: formData
+      });
     }
 
     /**
@@ -242,6 +288,6 @@
 
   }
 
-  module.exports = Database;
+  module.exports = new Database();
 
 })();
