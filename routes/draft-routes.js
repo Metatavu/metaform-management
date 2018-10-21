@@ -54,6 +54,12 @@
       if (!req.body.email || !req.body.draftUrl) {
         return res.status(400).send("Did not receive email address or URL to draft");
       }
+
+      const id = req.params.id;
+      const draft = await database.findFormDraftById(id);
+      if (!draft) {
+        return res.status(404).send("Not found");
+      }
       
       let html = `<p>Käytä alla olevaa linkkiä jatkaaksesi lomakkeen täyttämistä.</p>`;
       html += `<a href="${req.body.draftUrl}">${req.body.draftUrl}</a>`;
