@@ -23,7 +23,7 @@
     constructor (app, keycloakMultirealm) {
       super(app, keycloakMultirealm);
 
-      app.get("/formDraft", this.catchAsync(this.getDraft.bind(this)));
+      app.get("/formDraft/:id", this.catchAsync(this.getDraft.bind(this)));
       app.post("/formDraft", this.catchAsync(this.createDraft.bind(this)));
       app.post("/formDraft/:id/email", this.catchAsync(this.sendDraftToEmail.bind(this)));
     }
@@ -75,6 +75,7 @@
      * @param {Express.Response} res server response object
      */
     async getDraft (req, res) {
+      const id = req.params.id;
       const draft = await database.findFormDraftById(id);
       if (!draft) {
         return res.status(404).send("Not found");
