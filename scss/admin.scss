@@ -81,7 +81,16 @@ table.dataTable {
 .navbar-dark {
   display: none;
 
+  .fa-bars {
+    display: block;
+    float: right;
+  }
+
+  .navbar-nav {
+    padding-bottom: 7px;
+  }
+
   @media only screen and(max-width: 767px) {
-    display: flex;
+    display: block;
   }
 }
