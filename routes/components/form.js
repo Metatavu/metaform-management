@@ -6,6 +6,8 @@
   const FormUtils = require(__dirname + '/../../form/utils');
   const ApiClient = require(`${__dirname}/../../api-client`);
   const anonymousAuth = require(`${__dirname}/../../anonymous-auth`);
+  const uuid = require('uuid/v4');
+  const mailer = require(`${__dirname}/../../services/mailer`);
 
   exports.updateReply = async (req, res) => {
     try {

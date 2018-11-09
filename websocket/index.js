@@ -3,9 +3,9 @@
 
   const SocketDatas = require(`${__dirname}/socket-datas.js`);
   
-  module.exports = (http, database) => {
+  module.exports = (http) => {
     const io = require('socket.io')(http);
-    const socketDatas = new SocketDatas(database);
+    const socketDatas = new SocketDatas();
 
     io.on('connection', async (socket) => {
       await socketDatas.set(socket.id, {
