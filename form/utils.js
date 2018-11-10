@@ -381,6 +381,51 @@
       });
     }
 
+    /** 
+     * Returns table column title
+     * 
+     * @param {Object} field field 
+     * @param {String} value value
+     * @returns {String} option field text
+     */
+    static getOptionFieldValueText(field, value) {
+      if (!value) {
+        return null;
+      }
+
+      const options = field.options || [];
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].name === value) {
+          return options[i].text;
+        }
+      }
+
+      return value;
+    }
+
+    /** 
+     * Returns table column title
+     * 
+     * @param {Object} field field 
+     * @param {String} columnName column's name
+     * @returns {String} column title
+     */
+    static getTableColumnTitle(field, columnName) {
+      if (!columnName) {
+        return null;
+      }
+
+      const columns = field.columns || [];
+
+      for (let i = 0; i < columns.length; i++) {
+        if (columns[i].name === columnName) {
+          return columns[i].title || columns[i].name;
+        }
+      }
+
+      return columnName;
+    }
+
   }
   
   module.exports = FormUtils;
