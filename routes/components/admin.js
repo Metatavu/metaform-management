@@ -271,11 +271,10 @@
   }
 
   exports.createXlsx = async (req, res) => {
-    const includeFiltered = req.query.includeFiltered == "true";
-    const allowDeletion = config.get('allow-deletion') || false;
     const apiClient = new ApiClient(req.metaform.token.token);
     const repliesApi = apiClient.getRepliesApi();
     const metaformsApi = apiClient.getMetaformsApi();
+    const attachmentsApi = apiClient.getAttachmentsApi();
     const realm = res.locals.formConfig.realm;
     const formId = res.locals.formConfig.id;
 
@@ -296,11 +295,18 @@
       modifiedAfter: null,
       includeRevisions: false
     });
-    
+
+    const header = [];    
     const rows = [];
-    const header = [];
-    const fieldNames = req.query.fields.split(',');
-    
+    const fieldMap = {};
+    const fieldNames = fields.map((field) => {
+      return field.name;
+    });
+
+    fields.forEach((field) => {
+      fieldMap[field.name] = field;
+    });
+
     for (let i = 0; i < fieldNames.length; i++) {
       for (let j = 0; j < fields.length;j++) {
         if (fieldNames[i] === fields[j].name) {
@@ -321,34 +327,73 @@
       const reply = replyDatas[i];
 
       for (let j = 0; j < fieldNames.length; j++) {
-        const replyField = reply[fieldNames[j]];
-        if (typeof(replyField) === 'undefined') {
+        const fieldName = fieldNames[j];
+        const field = fieldMap[fieldName];
+        const fieldType = field.type;
+
+        let fieldValue = reply[fieldName];
+        if (!fieldValue) {
           row.push('');
-        } else if (fieldNames[j] === 'attachments') {
-          row.push(util.format('%d kpl', replyField.length));
-        } else if (typeof(replyField) === 'object') {
-          if (Array.isArray(replyField)) {
-            if(replyField[0] && typeof(replyField[0]) === 'object') {
-              row.push(stringifyObjects(replyField));
-            } else {
-              row.push(replyField.join(', ')); 
-            }
-          } else {
-            if (moment.isDate(replyField)) {
-             row.push(moment(replyField).format('DD.MM.YYYY'));
-            } else {
-             row.push(stringifyObject(replyField)); 
-            }
-          }
-        } else {
-          row.push(replyField);
+          continue;
         }
+        
+        switch (fieldType) {
+          case "email":
+          case "number":
+          case "text":
+          case "memo":
+          break;
+          case "select":
+          case "radio":
+            fieldValue = FormUtils.getOptionFieldValueText(field, fieldValue);            
+          break;
+          case "checklist":
+            fieldValue = (Array.isArray(fieldValue) ? fieldValue : [fieldValue]).map((singleValue) => {
+              return FormUtils.getOptionFieldValueText(field, singleValue);
+            }).join(', ');
+          break;
+          case "date-time":
+            fieldValue = moment(fieldValue).format('DD.MM.YYYY');
+          break;
+          case "files":
+            const fileNames = await Promise.all((Array.isArray(fieldValue) ? fieldValue : [fieldValue]).map(async (attachmentId) => {
+              const attachment = await attachmentsApi.findAttachment(realm, attachmentId);
+              return attachment.name;
+            }));
+
+            fieldValue = fileNames.join(', ');
+          break;
+          case "table":
+            const tableRows = fieldValue.map((row) => {
+              const columnNames = Object.keys(row);
+              const rowResult = [];
+              
+              for (let j = 0; j < columnNames.length; j++) {
+                const columnName = columnNames[j];
+                const columnValue = row[columnName];
+                if (columnValue) {
+                  const columnTitle = FormUtils.getTableColumnTitle(field, columnName);
+                  rowResult.push(`${columnTitle}: ${columnValue}`);
+                }
+              }
+
+              return rowResult.join(",");
+            });
+
+            fieldValue = tableRows.join(",");
+          break;
+          default:
+            console.log(`Unkown field type ${fieldType} returning value as-is`);
+          break;
+        }
+
+        row.push(fieldValue);
       }
 
       rows.push(row);
     }
 
-    const buffer = xlsx.build([{name: 'Hakemukset', data: rows}]);
+    const buffer = xlsx.build([{name: 'Vastaukset', data: rows}]);
     res.setHeader('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.send(buffer);
   };

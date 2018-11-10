@@ -15,11 +15,11 @@ block body
       if includeFiltered
         .btn-group.mr-2
           a.btn.btn-sm.btn-outline-secondary(href="?") Oletusnäkymä
-          a.btn.btn-sm.btn-outline-secondary(href="#", data-include-filtered=includeFiltered) Vie xlsx-muodossa
+          a.btn.btn-sm.btn-outline-secondary(href="/admin/export/xlsx", data-include-filtered=includeFiltered) Vie xlsx-muodossa
       else
         .btn-group.mr-2
           a.btn.btn-sm.btn-outline-secondary(href="?includeFiltered=true") Näytä kaikki
-          a.btn.btn-sm.btn-outline-secondary(href="#", data-include-filtered=includeFiltered) Vie xlsx-muodossa
+          a.btn.btn-sm.btn-outline-secondary(href="/admin/export/xlsx", data-include-filtered=includeFiltered) Vie xlsx-muodossa
     .row.mt-4.table-container
       .col-12
         table#formsTable
