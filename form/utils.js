@@ -382,7 +382,7 @@
     }
 
     /** 
-     * Returns table column title
+     * Returns option field option title
      * 
      * @param {Object} field field 
      * @param {String} value value
