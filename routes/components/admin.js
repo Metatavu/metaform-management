@@ -28,6 +28,7 @@
       }
 
       const listConfig = res.locals.formConfig.list || {};
+      const includeRevisions = listConfig["include-revisions"] || false;
       const listFilters = listConfig.filters || [];
 
       const fieldFilters = includeFiltered  ? null : listFilters
@@ -54,9 +55,11 @@
         createdAfter: null,
         modifiedBefore: null,
         modifiedAfter: null,
-        includeRevisions: false,
+        includeRevisions: includeRevisions, 
         fields: fieldFilters
       });
+
+      console.log(FormUtils.getContextFields(metaform, 'MANAGEMENT_LIST'));
 
       res.render('admin', { 
         title: 'Hallintapaneeli',
