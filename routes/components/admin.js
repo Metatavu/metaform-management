@@ -28,6 +28,7 @@
       }
 
       const listConfig = res.locals.formConfig.list || {};
+      const includeRevisions = listConfig["include-revisions"] || false;
       const listFilters = listConfig.filters || [];
 
       const fieldFilters = includeFiltered  ? null : listFilters
@@ -54,7 +55,7 @@
         createdAfter: null,
         modifiedBefore: null,
         modifiedAfter: null,
-        includeRevisions: false,
+        includeRevisions: includeRevisions, 
         fields: fieldFilters
       });
 
