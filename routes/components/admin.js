@@ -297,6 +297,7 @@
       includeRevisions: false
     });
 
+    const sheets = [];
     const header = [];    
     const rows = [];
     const fieldMap = {};
@@ -365,23 +366,44 @@
             fieldValue = fileNames.join(', ');
           break;
           case "table":
-            const tableRows = fieldValue.map((row) => {
+            const sheetData = [];
+            const sheetHeader = fieldValue.length > 0 ? Object.keys(fieldValue[0]).map((colName) => FormUtils.getTableColumnTitle(field, colName)) : [];
+            sheetData.push(sheetHeader);
+            fieldValue.forEach((row) => {
               const columnNames = Object.keys(row);
+              let hasData = false;
               const rowResult = [];
               
               for (let j = 0; j < columnNames.length; j++) {
                 const columnName = columnNames[j];
                 const columnValue = row[columnName];
                 if (columnValue) {
-                  const columnTitle = FormUtils.getTableColumnTitle(field, columnName);
-                  rowResult.push(`${columnTitle}: ${columnValue}`);
+                  hasData = true;
+                  rowResult.push(columnValue);
+                } else {
+                  rowResult.push("");
                 }
               }
-
-              return rowResult.join(",");
+              if (hasData) {
+                sheetData.push(rowResult);
+              }
             });
 
-            fieldValue = tableRows.join(",");
+            if (sheetData.length > 1){
+              const sheetName = `${(field.title || fieldName).substring(0, 20)} - ${i + 2}`;
+              sheets.push({
+                name: sheetName,
+                data: sheetData
+              });
+              fieldValue = {
+                v: "Katso",
+                l: {
+                  Target: `#${sheetName}`
+                }
+              }
+            } else {
+              fieldValue = "";
+            }
           break;
           default:
             console.log(`Unkown field type ${fieldType} returning value as-is`);
@@ -394,8 +416,9 @@
       rows.push(row);
     }
 
-    const buffer = xlsx.build([{name: 'Vastaukset', data: rows}]);
-    res.setHeader('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    const buffer = xlsx.build([{name: 'Vastaukset', data: rows}].concat(sheets));
+    res.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     res.send(buffer);
   };
 
