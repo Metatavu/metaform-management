@@ -58,7 +58,7 @@
         includeRevisions: includeRevisions, 
         fields: fieldFilters
       });
-
+      
       res.render('admin', { 
         title: 'Hallintapaneeli',
         fields: FormUtils.getContextFields(metaform, 'MANAGEMENT_LIST'),
