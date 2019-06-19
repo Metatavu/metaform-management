@@ -6,7 +6,6 @@
 
   vex.defaultOptions.className = 'vex-theme-default';
 
-  $('#formsTable').DataTable();
   const socket = io();
 
   socket.on('reply:locked', function(replyId) {
@@ -61,6 +60,10 @@
   });
 
   $(document).ready(() => {
+
+    $.fn.dataTable.moment('DD.MM.YYYY');
+    $('#formsTable').DataTable();
+
     $('.metaform-container').each((index, element) => {
       const replyId = $(element).attr('data-reply-id');
 
