@@ -10,4 +10,4 @@ RUN npm remove -g grunt
 RUN apt purge sass
 RUN apt autoremove
 EXPOSE 3000
-CMD "ls; node app.js"
+CMD [ "node", "app.js" ]
