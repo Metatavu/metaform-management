@@ -406,11 +406,25 @@
                 name: sheetName,
                 data: sheetData
               });
-              fieldValue = {
-                v: "Katso",
-                l: {
-                  Target: `#${sheetName}`
-                }
+              
+              switch (fieldName) {
+                case "total-of-applied-aid":
+                  fieldValue = `${exportTotalOfAppliedAidTable(fieldValue)} €`;
+                break;
+                case "number-of-practices":
+                  fieldValue = exportNumberOfPractices(fieldValue);
+                break;
+                case "number-of-competitions":
+                  fieldValue = exportNumberOfCompetitions(fieldValue);
+                break;
+                default:
+                  fieldValue = {
+                    v: "Katso",
+                    l: {
+                      Target: `#${sheetName}`
+                    }
+                  }
+                break;
               }
             } else {
               fieldValue = "";
@@ -432,6 +446,55 @@
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     res.send(buffer);
   };
+
+  function exportTotalOfAppliedAidTable(fieldValue) {
+    let totalAmount = 0;
+    fieldValue.forEach((row) => {
+      let amount = row["amount-of-applied-aid"];
+      if (amount) {
+        let numericAmount = Number(amount);
+        if (!isNaN(numericAmount)) {
+          totalAmount += numericAmount;
+        }
+      }
+    });
+
+    return totalAmount;
+  }
+
+  function exportNumberOfPractices(fieldValue) {
+    let totalAmount = 0;
+    fieldValue.forEach((row) => {
+      let amount = row["practice-amount"];
+      let participants = row["practice-participants"];
+      if (amount && participants) {
+        let numericAmount = Number(amount);
+        let numericParticipants = Number(participants);
+        if (!isNaN(numericAmount) && !isNaN(numericParticipants)) {
+          totalAmount += (numericAmount * numericParticipants);
+        }
+      }
+    });
+
+    return totalAmount;
+  }
+
+  function exportNumberOfCompetitions(fieldValue) {
+    let totalAmount = 0;
+    fieldValue.forEach((row) => {
+      let amount = row["competition-amount"];
+      let participants = row["competition-participants"];
+      if (amount && participants) {
+        let numericAmount = Number(amount);
+        let numericParticipants = Number(participants);
+        if (!isNaN(numericAmount) && !isNaN(numericParticipants)) {
+          totalAmount += (numericAmount * numericParticipants);
+        }
+      }
+    });
+
+    return totalAmount;
+  }
 
   function stringifyObjects(objects) {
     const result = objects.map((o) => {
