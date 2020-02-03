@@ -240,8 +240,20 @@
     }
   };
 
-  exports.deleteReply = (req, res) => {
-    res.status(501).send("Not implemented");
+  exports.deleteReply = async (req, res) => {
+    try {
+      const apiClient = new ApiClient(req.metaform.token.token);
+      const repliesApi = apiClient.getRepliesApi();
+      const realm = res.locals.formConfig.realm;
+      const formId = res.locals.formConfig.id;
+      const replyId = req.params.id;
+
+      await repliesApi.deleteReply(realm, formId, replyId);
+      
+      res.send("ok");
+    } catch (e) {
+      res.status(500).send(e);
+    }
   };
 
   exports.renderReplyPdf = async (req, res) => {
