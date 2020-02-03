@@ -333,6 +333,12 @@
       return reply.data;
     });
 
+    replyDatas.sort((a, b) => {
+      let textA = (a["applicant"] || "").toUpperCase();
+      let textB = (b["applicant"] || "").toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
+
     rows.push(header);
 
     for (let i = 0; i < replyDatas.length; i++) {
