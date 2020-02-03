@@ -48,7 +48,6 @@
       let allowDrafts = null;
 
       const metaform = formId != null ? await metaformsApi.findMetaform(realm, formId) : null;
-      console.log(metaform);
       if (metaform) {
         formJson = {
           sections: metaform.sections,
