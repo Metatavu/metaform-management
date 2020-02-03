@@ -39,8 +39,8 @@ block body
                   +table-title(field, reply)
                 each metafield in metafields
                   +table-title(metafield, reply)
-                td
+                td(style="white-space: nowrap")
                   a.btn.btn-primary(href="/admin/replies/" + reply.id)
                     |Avaa
                   if allowDeletion
-                    button.btn.btn-danger.delete-reply-btn(data-id=reply.id) Poista
+                    button(style="margin-left: 5px").btn.btn-danger.delete-reply-btn(data-id=reply.id) Poista
