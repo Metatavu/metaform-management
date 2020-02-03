@@ -37,7 +37,11 @@
       for (let i = 0; i < fields.length; i++) {
         let field = fields[i];
         if (field.flags && field.flags.managementEditable) {
-          reply.data[field.name] = req.body[field.name];
+          if (field.type === 'table') {
+            reply.data[field.name] = req.body[field.name] ? JSON.parse(req.body[field.name]) : [];
+          } else {
+            reply.data[field.name] = req.body[field.name];
+          }
         }
       }
 
@@ -78,8 +82,9 @@
       const payload = {
         data: FormUtils.getFormData(req, metaform)
       };
-
+      
       const reply = await repliesApi.createReply(realm, formId, payload);
+
       if (reply) {
         res.send(reply);
       } else {
