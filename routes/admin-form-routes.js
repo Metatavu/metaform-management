@@ -48,9 +48,11 @@
       let allowDrafts = null;
 
       const metaform = formId != null ? await metaformsApi.findMetaform(realm, formId) : null;
+      console.log(metaform);
       if (metaform) {
         formJson = {
-          sections: metaform.sections
+          sections: metaform.sections,
+          scripts: metaform.scripts
         };
 
         title = metaform.title;
@@ -94,6 +96,7 @@
             allowDrafts: allowDrafts,
             title: title,
             sections: formJson.sections,
+            scripts: formJson.scripts,
             exportThemeId: exportThemeId
           });
 
@@ -112,6 +115,7 @@
           metaform.allowAnonymous = allowAnonymous;
           metaform.allowDrafts = allowDrafts;
           metaform.sections = formJson.sections;
+          metaform.scripts = formJson.scripts;
           metaform.exportThemeId = exportThemeId;
 
           await metaformsApi.updateMetaform(realm, formId, metaform);
