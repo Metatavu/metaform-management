@@ -284,6 +284,18 @@
     static getFormData(req, metaform) {
       const result = Object.assign({}, req.body);
       const tableFields = FormUtils.getFieldNamesByType(metaform, "table");
+      const numberFields = FormUtils.getFieldNamesByType(metaform, "number");
+
+      for (let i = 0; i < numberFields.length; i++) {
+        const numberField = numberFields[i];
+
+        if (FormUtils.isValueSet(req, numberField)) {
+          const numberValue = req.body[numberField];
+          if ((typeof numberValue) === "string" && numberValue.indexOf(",") > -1) {
+            result[numberField] = numberValue.replace(/,/g, '.');
+          }
+        }
+      }
 
       for (let i = 0; i < tableFields.length; i++) {
         const tableField = tableFields[i];
