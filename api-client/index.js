@@ -81,6 +81,7 @@
     createClient() {
       const client = new MetaformApiClient.ApiClient();
       client.basePath = this.apiUrl;
+      client.timeout = 60000 * 5;
       client.authentications.bearer = Object.assign({}, client.authentications.bearer, {
         apiKeyPrefix: 'Bearer',
         apiKey: this.accessToken
