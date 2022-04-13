@@ -17,7 +17,7 @@
     "load-grunt-tasks": "^4.0.0"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "1.18.3",
